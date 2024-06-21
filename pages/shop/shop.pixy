@@ -1,0 +1,66 @@
+component Shop(items []*arn.ShopItem, itemPopularity map[string]int, user *arn.User)
+	ShopTabs(user)
+
+	h1.page-title Shop
+
+	.shop-items
+		each item in items
+			ShopItem(item, itemPopularity[item.ID])
+	
+	footer#pro-benefits-footer.buttons.mountable
+		button.pro-benefits-button.action(data-action="toggleFade", data-trigger="click", data-element-id="pro-benefits")
+			RawIcon("question-circle")
+			p View benefits of PRO accounts
+	
+	#pro-benefits.fade.fade-out
+		h3.pro-benefits-header.mountable PRO accounts let you...
+
+		ul
+			li.pro-benefit.mountable
+				Icon("check")
+				span Access the dark theme
+
+			li.pro-benefit.mountable
+				Icon("check")
+				span Customize your cover image
+
+			li.pro-benefit.mountable
+				Icon("check")
+				span Gain early access to new features
+
+			li.pro-benefit.mountable
+				Icon("check")
+				span Secure a spot on the supporters page
+
+			li.pro-benefit.mountable
+				Icon("check")
+				span Show a star next to your avatar
+
+			li.pro-benefit.mountable
+				Icon("check")
+				span Receive the supporter role on the Discord server
+
+			li.pro-benefit.mountable
+				Icon("check")
+				span ...and many more luxury features in the future.
+
+component ShopTabs(user *arn.User)
+	.tabs
+		Tab("Support", "heart", "/support")
+
+		if user != nil
+			Tab("Shop", "shopping-cart", "/shop")
+			Tab("Inventory", "briefcase", "/inventory")
+			Tab("History", "history", "/shop/history")
+			Tab(strconv.Itoa(user.Balance), "diamond", "/charge")
+
+component ShopItem(item *arn.ShopItem, popularity int)
+	.shop-item.mountable(data-item-id=item.ID)
+		.shop-item-info-column
+			h3.shop-item-name= item.Name
+			.shop-item-popularity= stringutils.Plural(popularity, "user") + " bought this"
+
+		.buttons.shop-buttons
+			button.shop-button-buy.action(data-item-id=item.ID, data-item-name=item.Name, data-price=item.Price, data-trigger="click", data-action="buyItem")
+				span.shop-item-price= "Buy for " + fmt.Sprint(item.Price)
+				Icon("diamond")

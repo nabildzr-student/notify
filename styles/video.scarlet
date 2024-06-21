@@ -1,0 +1,100 @@
+const video-padding = 56.25%
+const video-control-color = rgba(255, 255, 255, 0.85)
+const video-progress-height = 0.35rem
+const video-progress-clickable-height-buffer = 0.4rem
+
+.video-container
+	position relative
+	width 100%
+	min-height 100px
+	padding-bottom video-padding
+	border-radius ui-element-border-radius
+	overflow hidden
+
+	:fullscreen
+		padding-bottom 0
+		height 100%
+
+	:hover
+		.video-controls
+			opacity 1
+
+.video
+	position absolute
+	width 100%
+	height 100%
+	left 0
+	top 0
+	background-color black
+
+.video-controls
+	horizontal
+	align-items center
+	position absolute
+	bottom 0
+	right 0
+	padding 0.5rem 0.75rem
+	opacity 0
+	width 100%
+	default-transition
+
+	:hover
+		opacity 1 !important
+
+.video-progress-clickable
+	flex 1
+	padding video-progress-clickable-height-buffer 0
+
+	:hover
+		cursor pointer
+
+.video-progress-container
+	height video-progress-height
+	background rgba(255, 255, 255, 0.3)
+	border-radius ui-element-border-radius
+	transform translateZ(0)
+	overflow hidden
+
+.video-progress
+	background link-color
+	width 100%
+	height video-progress-height
+	transform scaleX(0)
+	transform-origin 0
+	will-change transform
+
+.video-time
+	color video-control-color
+	margin-left 0.5rem
+
+.video-control
+	background transparent !important
+	color video-control-color
+	border none
+	line-height 1em
+	height auto
+	padding 0
+
+	:hover
+		color white
+
+.video-control-fullscreen
+	margin-left 0.5rem
+
+.video-control-play,
+.video-control-pause
+	margin-right 0.5rem
+
+.video-control-pause
+	display none
+
+::cue
+	background transparent
+	font-family "Ubuntu", "Trebuchet MS", sans-serif
+	line-height 1.5em
+
+	// Use a blurry shadow and a solid outline on each side
+	text-shadow 0 0 0.5em rgba(0, 0, 0, 0.7), -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black
+
+::-webkit-media-controls
+	display none !important

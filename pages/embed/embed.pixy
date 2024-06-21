@@ -1,0 +1,22 @@
+component BrowserExtension(watchingList *arn.AnimeList, viewUser *arn.User, user *arn.User)
+	AnimeList(watchingList.Items, -1, viewUser, user)
+
+component ExtensionNavigation(user *arn.User)
+	nav.extension-navigation
+		button.action(data-trigger="click", data-action="toggleSidebar")
+			RawIcon("bars")
+		
+		if user != nil && !user.IsPro()
+			.spacer
+
+			a.button(href="/support", target="_blank")
+				RawIcon("heart")
+
+component ExtensionEnterBasicInfo
+	h1.mountable Welcome!
+	p.welcome-text.mountable Please complete some basic information about your profile.
+
+	.buttons.mountable
+		a.button(href="/welcome", target="_blank")
+			Icon("pencil")
+			span Complete profile

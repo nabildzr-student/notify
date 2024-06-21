@@ -1,0 +1,41 @@
+{
+	"editor.detectIndentation": false,
+	"editor.insertSpaces": false,
+	"files.trimTrailingWhitespace": true,
+	"files.exclude": {
+		"**/*.js": {
+			"when": "$(basename).ts"
+		},
+		"notify.moe": true,
+		"components/": true,
+		"audio/": true,
+		"logs/": true,
+		"jobs/mal-download/anime/": true,
+		"jobs/mal-download/character/": true,
+	},
+	"files.watcherExclude": {
+		"**/.git/objects/**": true,
+		"**/.git/subtree-cache/**": true,
+		"**/node_modules/*/**": true,
+		"**/mal-download/anime/**": true,
+		"**/mal-download/character/**": true
+	},
+	"files.associations": {
+		"*.pixy": "jade",
+		"*.scarlet": "stylus"
+	},
+	"search.exclude": {
+		"components/": true,
+		"audio/": true,
+		"**/*.svg": true,
+		"**/*.html": true,
+		"**/*.opus": true,
+		"**/*.ogg": true,
+		"**/*.m4a": true,
+		"**/*.webm": true,
+		"**/*.log": true
+	},
+	"[jade]": {
+		"files.trimTrailingWhitespace": false
+	}
+}

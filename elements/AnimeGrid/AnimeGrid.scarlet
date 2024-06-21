@@ -1,0 +1,32 @@
+.anime-grid
+	grid
+
+.anime-grid-cell
+	grid-cell
+	default-transition
+
+	:hover
+		.image-title,
+		.anime-grid-add-button
+			opacity 1
+
+< 450px
+	.anime-grid-cell
+		width 71px
+		height 100px
+		margin 0.3rem
+
+.anime-grid-cell-hide
+	opacity 0.05
+	pointer-events none
+
+.anime-grid-image
+	grid-image
+
+.anime-grid-add-button
+	opacity 0
+	position absolute
+	top 5px
+	right 5px
+	padding 0.25rem
+	height auto

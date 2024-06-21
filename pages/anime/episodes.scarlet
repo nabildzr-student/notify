@@ -1,0 +1,60 @@
+const episode-margin = 0.5rem
+
+.episodes
+	horizontal-wrap
+	justify-content space-evenly
+
+.episode
+	vertical
+	ui-element
+	button-hover
+	margin episode-margin
+	padding 0.5rem
+	width calc(50% - episode-margin * 2)
+	color text-color
+	box-shadow shadow-light
+
+	[data-available="false"]
+		:hover
+			color text-color
+			background ui-background
+
+		&.mounted
+			opacity 0.25 !important
+
+> 700px
+	.episodes
+		justify-content flex-start
+
+	.episode
+		width 190px
+
+.episode-number
+	display flex
+	justify-content center
+	align-items center
+	font-size 2rem
+	line-height 1.7em
+
+.episode-title
+	text-align center
+	font-size 0.7rem
+	opacity 0.8
+	clip-long-text
+
+.episode-airing-date-start
+	display flex
+	justify-content center
+	font-size 0.7rem
+	opacity 0.6
+
+.episode-friends
+	horizontal
+	position absolute
+	bottom -0.85rem
+	right -0.85rem
+
+	.user-image
+		width calc(avatar-size / 2)
+		height calc(avatar-size / 2)
+		margin-left -0.5rem

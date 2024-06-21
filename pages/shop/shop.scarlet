@@ -1,0 +1,98 @@
+const item-color-pro-account = hsl(0, 100%, 71%)
+const item-color-anime-support-ticket = hsl(217, 64%, 50%)
+
+.shop-items
+	vertical
+	width 100%
+	max-width 600px
+	margin 0 auto
+
+.shop-item
+	horizontal
+	align-items center
+	padding 0.5rem 0
+	border-bottom ui-border
+
+	:last-child
+		border-bottom none
+
+.shop-item-info-column
+	flex 0.7
+	vertical
+
+.shop-item-name
+	font-size 1.4rem
+	text-align left
+	margin 0
+	clip-long-text
+
+.shop-item-popularity
+	opacity 0.5
+
+.shop-item-icon
+	//
+
+// Colors
+.shop-item, .inventory-slot, .shop-history-item
+	[data-item-id="pro-account-1"],
+	[data-item-id="pro-account-3"],
+	[data-item-id="pro-account-6"],
+	[data-item-id="pro-account-12"],
+	[data-item-id="pro-account-24"]
+		.shop-item-icon
+			color item-color-pro-account
+
+	// [data-item-id="anime-support-ticket"]
+	// 	.shop-item-icon
+	// 		color item-color-anime-support-ticket
+
+.shop-item-price
+	// ...
+
+.shop-buttons
+	flex 0.3
+	white-space nowrap
+
+.shop-button-buy
+	width 100%
+	justify-content center
+
+	svg-icon
+		[name="diamond"]
+			margin-left 0.3rem
+			margin-right 0
+
+#pro-benefits-footer
+	margin-top 3rem
+	margin-bottom 1rem
+
+.pro-benefits-button
+	vertical
+	color hsla(text-color-h, text-color-s, text-color-l, 0.5)
+	background transparent
+	border none
+	font-size 0.8rem
+
+	:hover
+		background transparent
+		border none
+		color link-hover-color
+
+#pro-benefits
+	margin 0 auto
+	width 100%
+	max-width 450px
+
+.pro-benefits-header
+	text-align center
+	margin-bottom 1rem
+
+.pro-benefit
+	horizontal
+	align-items center
+	list-style-type none
+	font-size 1.2rem
+	line-height 1.6em
+
+	svg-icon
+		color like-color

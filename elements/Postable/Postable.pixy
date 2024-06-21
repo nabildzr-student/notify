@@ -1,0 +1,75 @@
+component Postable(post arn.Postable, user *arn.User, includeReplies bool, showParent bool, highlightAuthorID string)
+	.post.mountable(id=fmt.Sprintf("%s-%s", strings.ToLower(post.TypeName()), post.GetID()), data-pro=post.Creator().IsPro(), data-api=fmt.Sprintf("/api/%s/%s", strings.ToLower(post.TypeName()), post.GetID()))
+		.post-parent
+			.post-author
+				Avatar(post.Creator())
+
+			.post-box(data-highlight=post.Creator().ID == highlightAuthorID)
+				.post-header
+					.post-header-info
+						a(href=post.Creator().Link())= post.Creator().Nick
+					
+						if showParent
+							if post.TypeName() == "Thread"
+								span  in 
+								a(href=post.Link())= post.TitleByUser(user)
+							else if post.GetParentType() == "User"
+								if post.GetParentID() != post.Creator().ID
+									span  to 
+									a(href=post.Parent().Link())= post.Parent().TitleByUser(user)
+							else if post.GetParentType() != ""
+								span  in 
+								a(href=post.Parent().Link())= post.Parent().TitleByUser(user)
+
+					if user != nil
+						if user.ID == post.Creator().ID
+							button.post-action.post-header-action.tip.action(data-action="editPost", data-trigger="click", data-id=post.GetID(), aria-label="Edit")
+								RawIcon("pencil")
+
+					if post.TypeName() != "Thread"
+						if user != nil && (user.Role == "admin" || user.Role == "editor")
+							button.post-action.post-header-action.tip.action(data-action="deletePost", data-trigger="click", data-id=post.GetID(), aria-label="Delete")
+								RawIcon("trash")
+					
+					a.post-action.post-header-action.tip(href=post.Link(), aria-label="Link")
+						RawIcon("link")
+					
+					time.post-date.utc-date(datetime=post.GetCreated())
+
+				.post-content(id="render-" + post.GetID())!= post.HTML()
+
+				if user != nil && user.ID == post.Creator().ID
+					.post-edit-interface
+						if post.TypeName() == "Thread"
+							input.post-title-input.hidden(id="title-" + post.GetID(), value=post.TitleByUser(user), type="text", placeholder="Thread title")
+						
+						textarea.post-text-input.hidden(id="source-" + post.GetID(), maxlength=limits.DefaultTextAreaMaxLength)= post.GetText()
+						
+						.buttons.hidden(id="edit-toolbar-" + post.GetID())
+							a.button.post-save.action(data-action="savePost", data-trigger="click", data-id=post.GetID())
+								Icon("save")
+								span Save
+
+							a.button.post-cancel-edit.action(data-action="editPost", data-trigger="click", data-id=post.GetID())
+								Icon("close")
+								span Cancel
+
+				.post-toolbar
+					if user != nil
+						button.post-action.post-toolbar-action.tip.action(data-post-id=post.GetID(), aria-label="Reply", data-action="reply", data-trigger="click")
+							Icon("reply")
+							span= post.CountPosts()
+
+					if user != nil && post.LikedBy(user.ID)
+						button.post-action.post-toolbar-action.tip.action(id="unlike-" + post.GetID(), aria-label="Unlike", data-action="unlike", data-trigger="click", data-like="true")
+							Icon("heart")
+							span= post.CountLikes()
+					else
+						button.post-action.post-toolbar-action.tip.action(id="like-" + post.GetID(), aria-label="Like", data-action="like", data-trigger="click", data-like="false")
+							Icon("heart-o")
+							span= post.CountLikes()
+
+		.replies(id="replies-" + post.GetID())
+			if includeReplies
+				each reply in post.Posts()
+					Postable(reply, user, true, false, highlightAuthorID)

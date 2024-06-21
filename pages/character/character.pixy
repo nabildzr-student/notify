@@ -1,0 +1,137 @@
+component CharacterTabs(character *arn.Character, user *arn.User)
+	.tabs
+		Tab("Character", "user", character.Link())
+		Tab("Edit", "pencil", character.Link() + "/edit")
+		Tab("Images", "image", character.Link() + "/edit/images")
+		Tab("History", "history", character.Link() + "/history")
+
+component CharacterDetails(character *arn.Character, characterAnime []*arn.Anime, quotes []*arn.Quote, friends []*arn.User, relevantCharacters []*arn.Character, mainQuote *arn.Quote, user *arn.User)
+	.character-page
+		.character-left-column
+			.character-header
+				.character-image-container.mountable(data-mountable-type="header")
+					img.character-image-large.lazy(data-src=character.ImageLink("large"), data-webp="true", data-color=character.AverageColor(), alt=character.Name.Canonical)
+					
+					.buttons
+						LikeButton(strconv.Itoa(len(character.Likes)), "heart", "character", character, user)
+
+						if user != nil && (user.Role == "editor" || user.Role == "admin")
+							a.button.tip.mountable(href=character.Link() + "/edit", aria-label="Edit character", data-mountable-type="header")
+								RawIcon("pencil")
+				
+				.character-description-container
+					if character.Name.Canonical == ""
+						h1.character-name.mountable(data-mountable-type="header") untitled
+					else
+						h1.character-name.mountable(data-mountable-type="header")= character.Name.Canonical
+
+					.anime-alternative-title.mountable(data-mountable-type="header")
+						if character.Name.Japanese != ""
+							Japanese(character.Name.Japanese)
+						else
+							Japanese("日本語の名前無し")
+					
+					//- if mainQuote != nil
+					//- 	.character-quotes
+					//- 		Quote(mainQuote, user)
+					
+					.character-description.mountable(data-mountable-type="header")!= markdown.Render(character.Description)
+					
+					.character-spoilers
+						each spoiler in character.Spoilers
+							.spoiler.character-spoiler.mountable(data-mountable-type="header")!= markdown.Render(spoiler.Text)
+			
+			.character-main-column
+				if len(characterAnime) > 0
+					.character-section
+						h3.character-section-name.mountable Anime
+
+						.anime-cards
+							each anime in characterAnime
+								AnimeCard(anime, fmt.Sprintf("%s %d", stringutils.Capitalize(anime.Season()), anime.StartDateTime().Year()), user)
+
+				if len(quotes) > 0
+					.character-section
+						h3.character-section-name.mountable Quotes
+
+						.character-quotes.mountable
+							each quote in quotes
+								QuotePreview(quote, user)
+		
+			.character-section
+				h3.character-section-name.mountable Comments
+				
+				.character-comments
+					Comments(character, user)
+
+		CharacterSidebar(character, friends, relevantCharacters, user)
+
+component CharacterSidebar(character *arn.Character, friends []*arn.User, relevantCharacters []*arn.Character, user *arn.User)
+	.character-sidebar
+		h3.mountable(data-mountable-type="sidebar") Information
+
+		table.character-attributes.mountable(data-mountable-type="sidebar")
+			//- Ranking
+			tr.mountable(data-mountable-type="info")
+				td.character-attributes-name Ranking:
+				td.character-attributes-value
+					a.character-ranking(href="/characters/best", data-character-id=character.ID) View
+			
+			//- Attributes
+			each attribute in character.Attributes
+				tr.mountable(data-mountable-type="info")
+					td.character-attributes-name= attribute.Name + ":"
+
+					if strings.Contains(attribute.Value, "<")
+						td.character-attributes-value!= markdown.Render(attribute.Value)
+					else
+						td.character-attributes-value= attribute.Value
+						//- td.character-attributes-value
+						//- 	if strings.Contains(attribute.Value, ",")
+						//- 		ul
+						//- 			each part in strings.Split(attribute.Value, ",")
+						//- 				li= strings.TrimSpace(part)
+						//- 	else
+						//- 		span= attribute.Value
+		
+		if len(relevantCharacters) > 0
+			h3.mountable(data-mountable-type="sidebar") Relevant
+
+			.relevant-characters.mountable(data-mountable-type="sidebar")
+				each relevantCharacter in relevantCharacters
+					.mountable(data-mountable-type="relevant-character")
+						CharacterSmall(relevantCharacter, user)
+		
+		if len(friends) > 0
+			.character-friends
+				h3.mountable(data-mountable-type="sidebar") Likes
+
+				.user-avatars.mountable(data-mountable-type="sidebar")
+					each friend in friends
+						.mountable(data-mountable-type="friend")
+							if friend.IsActive()
+								Avatar(friend)
+							else
+								.inactive-user
+									Avatar(friend)
+
+		h3.mountable(data-mountable-type="sidebar") Links
+
+		.light-button-group.mountable(data-mountable-type="sidebar")
+			if character.GetMapping("myanimelist/character") != ""
+				a.light-button(href="https://myanimelist.net/character/" + character.GetMapping("myanimelist/character"), target="_blank", rel="noopener")
+					Icon("external-link")
+					span MAL
+			else if user != nil && (user.Role == "editor" || user.Role == "admin")
+				a.light-button(href="https://myanimelist.net/character.php?q=" + character.Name.Canonical, target="_blank", rel="noopener")
+					Icon("exclamation-triangle")
+					span Error: No MAL ID
+			
+			if character.GetMapping("anilist/character") != ""
+				a.light-button(href="https://anilist.co/character/" + character.GetMapping("anilist/character"), target="_blank", rel="noopener")
+					Icon("external-link")
+					span AniList
+			
+			a.light-button(href="/api" + character.Link(), target="_blank")
+				Icon("code")
+				span API

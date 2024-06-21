@@ -1,0 +1,270 @@
+component Anime(anime *arn.Anime, listItem *arn.AnimeListItem, tracks []*arn.SoundTrack, amvs []*arn.AMV, amvAppearances []*arn.AMV, episodes []*arn.Episode, friends []*arn.User, listItems map[*arn.User]*arn.AnimeListItem, episodeToFriends map[int][]*arn.User, user *arn.User)
+	.anime
+		.anime-main-column
+			AnimeMainColumn(anime, listItem, tracks, amvs, amvAppearances, episodes, episodeToFriends, user)
+		.anime-side-column
+			AnimeSideColumn(anime, friends, listItems, user)
+
+component AnimeMainColumn(anime *arn.Anime, listItem *arn.AnimeListItem, tracks []*arn.SoundTrack, amvs []*arn.AMV, amvAppearances []*arn.AMV, episodes []*arn.Episode, episodeToFriends map[int][]*arn.User, user *arn.User)
+	.anime-header(data-id=anime.ID)
+		a.anime-image-container.mountable(href=anime.ImageLink("original"), target="_blank", rel="noopener", data-mountable-type="header")
+			img.anime-cover-image.lazy(data-src=anime.ImageLink("large"), data-webp="true", data-color=anime.AverageColor(), alt=anime.Title.ByUser(user), importance="high")
+
+		.space
+
+		.anime-info
+			h1.anime-title.mountable(data-mountable-type="header")= anime.Title.ByUser(user)
+
+			h2.anime-alternative-title.mountable(data-mountable-type="header")
+				Japanese(anime.Title.Japanese)
+
+			p.anime-summary.mountable(data-mountable-type="header")= anime.Summary
+
+			.anime-summary-footer-container
+				footer.anime-summary-footer
+					AnimeGenres(anime)
+					AnimeActions(anime, listItem, user)
+
+	AnimeCharacters(anime, user, false)
+	AnimeRelations(anime, user, false)
+	AnimeTracks(anime, tracks, user, false)
+	AnimeAMVs(anime, amvs, amvAppearances, user)
+	AnimeEpisodes(anime, episodes, episodeToFriends, user, false)
+	AnimeComments(anime, user, false)
+
+component AnimeSideColumn(anime *arn.Anime, friends []*arn.User, listItems map[*arn.User]*arn.AnimeListItem, user *arn.User)
+	AnimeTrailer(anime, user)
+	AnimeInformation(anime)
+	AnimeRatings(anime, user)
+	AnimePopularity(anime)
+	AnimeFriends(friends, listItems)
+	AnimeLinks(anime, user)
+
+component AnimeActions(anime *arn.Anime, listItem *arn.AnimeListItem, user *arn.User)
+	if user != nil
+		.buttons.anime-actions
+			if user.Role == "editor" || user.Role == "admin"
+				button.mountable.action(data-action="syncEpisodes", data-trigger="click", data-anime-id=anime.ID, data-mountable-type="header")
+					Icon("refresh")
+					span Sync
+				
+				a.button.mountable(href=anime.Link() + "/edit", data-mountable-type="header")
+					Icon("pencil-square-o")
+					span Edit anime
+
+			if listItem != nil
+				a.button.mountable(href="/+" + user.Nick + "/animelist/anime/" + anime.ID, data-mountable-type="header")
+					Icon("pencil")
+					span= listItem.StatusHumanReadable()
+			else
+				button.mountable.action(data-api="/api/animelist/" + user.ID, data-action="addAnimeToCollection", data-trigger="click", data-anime-id=anime.ID, data-mountable-type="header")
+					Icon("plus")
+					span Add to collection
+
+component AnimeRatings(anime *arn.Anime, user *arn.User)
+	section.anime-section.mountable(data-mountable-type="sidebar")
+		h3.anime-section-name Ratings
+
+		table.anime-info-table
+			tbody
+				tr.mountable(data-mountable-type="ratings")
+					td.anime-info-key
+						if anime.Status == "upcoming"
+							span Hype:
+						else
+							span Overall:
+					td.anime-info-value
+						Rating(anime.Rating.Overall, anime.Rating.Count.Overall, user)
+
+				if anime.Rating.Count.Story > 0
+					tr.mountable(data-mountable-type="ratings")
+						td.anime-info-key Story:
+						td.anime-info-value
+							Rating(anime.Rating.Story, anime.Rating.Count.Story, user)
+
+				if anime.Rating.Count.Visuals > 0
+					tr.mountable(data-mountable-type="ratings")
+						td.anime-info-key Visuals:
+						td.anime-info-value
+							Rating(anime.Rating.Visuals, anime.Rating.Count.Visuals, user)
+
+				if anime.Rating.Count.Soundtrack > 0
+					tr.mountable(data-mountable-type="ratings")
+						td.anime-info-key Soundtrack:
+						td.anime-info-value
+							Rating(anime.Rating.Soundtrack, anime.Rating.Count.Soundtrack, user)
+
+component AnimePopularity(anime *arn.Anime)
+	if anime.Popularity.Total() > 0
+		section.anime-section.mountable(data-mountable-type="sidebar")
+			h3.anime-section-name Popularity
+
+			table.anime-info-table
+				if anime.Popularity.Watching > 0
+					tr.mountable(data-mountable-type="popularity")
+						td.anime-info-key Watching:
+						td.anime-info-value= anime.Popularity.Watching
+
+				if anime.Popularity.Completed > 0
+					tr.mountable(data-mountable-type="popularity")
+						td.anime-info-key Completed:
+						td.anime-info-value= anime.Popularity.Completed
+
+				if anime.Popularity.Planned > 0
+					tr.mountable(data-mountable-type="popularity")
+						td.anime-info-key Planned:
+						td.anime-info-value= anime.Popularity.Planned
+
+				if anime.Popularity.Hold > 0
+					tr.mountable(data-mountable-type="popularity")
+						td.anime-info-key On hold:
+						td.anime-info-value= anime.Popularity.Hold
+
+				if anime.Popularity.Dropped > 0
+					tr.mountable(data-mountable-type="popularity")
+						td.anime-info-key Dropped:
+						td.anime-info-value= anime.Popularity.Dropped
+
+component AnimeLinks(anime *arn.Anime, user *arn.User)
+	section.anime-section.mountable(data-mountable-type="sidebar")
+		h3.anime-section-name Links
+		
+		.light-button-group
+			each link in anime.Links
+				a.light-button(href=link.URL, target="_blank", rel="noopener")
+					Icon("external-link")
+					span= link.Title
+
+			each mapping in anime.Mappings
+				a.light-button(href=mapping.Link(), target="_blank", rel="noopener")
+					Icon("external-link")
+					span= mapping.Name()
+			
+			a.light-button(href="https://www.google.com/search?btnI=745&q=" + anime.Title.ByUser(user) + "+TV+series+site%3Aen.wikipedia.org", target="_blank", rel="noopener")
+				Icon("wikipedia-w")
+				span Wikipedia
+			
+			a.light-button(href="/api/anime/" + anime.ID, target="_blank", rel="noopener")
+				Icon("code")
+				span API
+
+component AnimeGenres(anime *arn.Anime)
+	.anime-genres
+		each genre in anime.Genres
+			a.anime-genre.mountable(href="/genre/" + strings.ToLower(genre), data-mountable-type="header")
+				span= genre
+
+component AnimeTrailer(anime *arn.Anime, user *arn.User)
+	if len(anime.Trailers) > 0 && anime.Trailers[len(anime.Trailers) - 1].Service == "Youtube" && anime.Trailers[len(anime.Trailers) - 1].ServiceID != ""
+		AnimeTrailerByIndex(anime, len(anime.Trailers)-1, user)
+
+component AnimeTrailerByIndex(anime *arn.Anime, index int, user *arn.User)
+	section.anime-section.mountable(data-mountable-type="sidebar")
+		h3.anime-section-name Trailer
+		.anime-trailer.video-container
+			iframe.video(src="https://www.youtube.com/embed/" + anime.Trailers[index].ServiceID + "?showinfo=0", importance="low", title=anime.Title.ByUser(user) + " trailer", allowfullscreen)
+
+component AnimeFriends(friends []*arn.User, listItems map[*arn.User]*arn.AnimeListItem)
+	if len(friends) > 0
+		section.anime-section.mountable(data-mountable-type="sidebar")
+			h3.anime-section-name Friends
+
+			.anime-friends
+				.user-avatars
+					each friend in friends
+						if friend.Nick != ""
+							.mountable(data-mountable-type="friend")
+								if friend.IsActive()
+									FriendEntry(friend, listItems)
+								else
+									.inactive-user
+										FriendEntry(friend, listItems)
+
+component AnimeInformation(anime *arn.Anime)
+	section.anime-section.mountable(data-mountable-type="sidebar")
+		h3.anime-section-name Information
+		table.anime-info-table
+			tr.mountable(data-mountable-type="info")
+				td.anime-info-key Type:
+				td.anime-info-value= anime.TypeHumanReadable()
+
+			if anime.EpisodeCount != 0
+				tr.mountable(data-mountable-type="info")
+					td.anime-info-key Episodes:
+					td.anime-info-value= anime.EpisodeCount
+
+			if anime.EpisodeLength != 0
+				tr.mountable(data-mountable-type="info")
+					td.anime-info-key Episode length:
+					td.anime-info-value= strconv.Itoa(anime.EpisodeLength) + " min."
+
+			tr.mountable(data-mountable-type="info")
+				td.anime-info-key Status:
+				td.anime-info-value= anime.StatusHumanReadable()
+
+			if anime.StartDate == anime.EndDate && validate.Date(anime.StartDate) && validate.Date(anime.EndDate)
+				tr.mountable(data-mountable-type="info")
+					td.anime-info-key Airing date:
+					td.anime-info-value= anime.StartDateTime().Format("Jan _2, 2006")
+			else
+				if anime.StartDate != ""
+					tr.mountable(data-mountable-type="info")
+						td.anime-info-key Start:
+
+						if validate.Date(anime.StartDate)
+							td.anime-info-value= anime.StartDateTime().Format("Jan _2, 2006")
+						else if len(anime.StartDate) >= len("2006-01")
+							td.anime-info-value= anime.StartDateTime().Format("Jan, 2006")
+						else
+							td.anime-info-value= anime.StartDate
+
+				if anime.EndDate != ""
+					tr.mountable(data-mountable-type="info")
+						td.anime-info-key End:
+
+						if validate.Date(anime.EndDate)
+							td.anime-info-value= anime.EndDateTime().Format("Jan _2, 2006")
+						else if len(anime.EndDate) >= len("2006-01")
+							td.anime-info-value= anime.EndDateTime().Format("Jan, 2006")
+						else
+							td.anime-info-value= anime.EndDate
+			
+			if anime.Season() != ""
+				tr.mountable(data-mountable-type="info")
+					td.anime-info-key Season:
+					td.anime-info-value
+						a(href="/explore/anime/" + anime.StartDate[:4] + "/" + anime.Season() + "/any/" + anime.Type)= stringutils.Capitalize(anime.Season()) + " " + anime.StartDate[:4]
+			
+			if anime.Source != "" && arn.AnimeSourceHumanReadable[anime.Source] != ""
+				tr.mountable(data-mountable-type="info")
+					td.anime-info-key Source:
+					td.anime-info-value= arn.AnimeSourceHumanReadable[anime.Source]
+
+			//- if anime.FirstChannel != ""
+			//- 	tr.mountable(data-mountable-type="info")
+			//- 		td.anime-info-key Channel:
+			//- 		td.anime-info-value= anime.FirstChannel
+
+			each company in anime.Studios()
+				tr.mountable(data-mountable-type="info")
+					td.anime-info-key Studio:
+					td.anime-info-value
+						a(href=company.Link())= company.Name.English
+
+	//- section.anime-section.mountable
+	//- 	h3.anime-section-name Companies
+	//- 	table.anime-info-table
+	//- 		each company in anime.Producers()
+	//- 			tr.mountable(data-mountable-type="info")
+	//- 				td.anime-info-key Producer:
+	//- 				td.anime-info-value
+	//- 					a(href=company.Link())= company.Name.English
+
+	//- 		each company in anime.Licensors()
+	//- 			tr.mountable(data-mountable-type="info")
+	//- 				td.anime-info-key Licensor:
+	//- 				td.anime-info-value
+	//- 					a(href=company.Link())= company.Name.English
+
+component FriendEntry(friend *arn.User, listItems map[*arn.User]*arn.AnimeListItem)
+	CustomAvatar(friend, friend.Link(), friend.Nick + " => " + listItems[friend].Status + " | " + fmt.Sprint(listItems[friend].Episodes) + " eps | " + fmt.Sprintf("%.1f", listItems[friend].Rating.Overall) + " rating")

@@ -1,0 +1,38 @@
+.genres
+	grid
+
+.genre
+	grid-cell
+	flip-card
+
+.genre-squared
+	width anime-image-medium-width
+	height anime-image-medium-width
+
+.genre-text
+	grid-text
+
+.genre-icon
+	grid-icon
+
+.genre-image
+	grid-image
+
+.front
+	ui-element
+	shadow-up
+
+.back
+	shadow-up
+
+< 450px
+	.genre-squared
+		width 71px
+		height 71px
+		margin 0.3rem
+
+		.genre-icon
+			margin 0
+
+		.genre-text-only
+			display none

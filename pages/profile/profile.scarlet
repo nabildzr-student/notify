@@ -1,0 +1,237 @@
+const profile-image-size = 280px
+
+.profile-head
+	vertical
+	cover-image-container
+	align-items center
+	// default-transition
+	// animation appear transition-speed
+
+.profile-info
+	vertical
+	margin-top calc(content-padding * 1.5)
+
+.profile-actions
+	horizontal-wrap
+	margin-top content-padding
+
+	:empty
+		display none
+
+.profile-action
+	margin-bottom 0.5rem
+	text-shadow none !important
+
+.profile-columns
+	vertical
+
+.profile-column
+	// border 1px solid red
+	// height 100px
+	padding content-padding-half
+
+.profile-column-header
+	font-style bold
+	margin-bottom 1rem
+
+.profile-section
+	margin-bottom 1rem
+
+	.no-data
+		text-align left
+
+		&.mounted
+			opacity 0.5 !important
+
+.profile-section-friends
+	margin-bottom 1.2rem
+
+.profile-section-activity
+	margin-bottom 0
+
+.profile-favorite-anime-container
+	display grid
+	grid-template-columns repeat(auto-fill, anime-image-small-width)
+	grid-template-rows repeat(auto-fill, anime-image-small-height)
+	grid-gap 0.5rem
+	justify-content space-evenly
+
+.profile-friends
+	display grid
+	grid-template-columns repeat(auto-fill, avatar-size)
+	grid-template-rows repeat(auto-fill, avatar-size)
+	grid-gap 0.5rem
+	margin 0 0.5rem
+	justify-content space-evenly
+
+.profile-favorite-anime
+	// anime-mini-item
+
+.profile-favorite-anime-image
+	anime-mini-item-image
+
+.profile-favorite-characters-container
+	display grid
+	grid-template-columns repeat(auto-fill, character-image-small-width)
+	grid-template-rows repeat(auto-fill, character-image-small-height)
+	grid-gap 0.5rem
+	justify-content space-evenly
+
+.profile-groups
+	display grid
+	grid-template-columns repeat(auto-fill, character-image-small-width)
+	grid-template-rows repeat(auto-fill, character-image-small-height)
+	grid-gap 0.5rem
+	justify-content space-evenly
+
+.profile-group
+	.group-image
+		width character-image-small-width
+		height character-image-small-height
+
+.profile-introduction
+	a
+		color white
+
+		:hover
+			text-shadow 0 0 6px rgba(255, 255, 255, 0.2)
+
+> 740px
+	.profile-head
+		horizontal
+		align-items stretch
+
+	.profile-info
+		align-items flex-start
+		margin-top 0
+		padding content-padding
+		padding-top 0
+		padding-bottom 0
+		padding-left calc(content-padding * 2)
+		// max-width 1200px
+
+	.profile-actions
+		position absolute
+		top 0
+		right 0
+		padding content-padding
+		margin-top 0
+
+	.profile-columns
+		display grid
+		grid-template-columns 27% 46% 27%
+
+	.profile-introduction
+		h1, h2, h3, h4, h5, h6
+			text-align left
+
+// const profile-boot-duration = 2s
+// animation appear
+// 	0%
+// 		transform rotateX(90deg)
+// 		filter opacity(0) saturate(0) blur(10px)
+// 	100%
+// 		transform rotateX(0)
+// 		filter opacity(1) saturate(1) blur(0)
+
+.profile-cover
+	position absolute
+	left 0
+	top 0
+	width 100%
+	height 100%
+	z-index -1
+	object-fit cover
+	// background-size cover
+	overflow hidden
+
+	// default-transition
+	// animation cover-animation profile-boot-duration
+	// animation-fill-mode forwards
+	filter brightness(30%) blur(0)
+
+// animation cover-animation
+// 	0%
+// 		filter brightness(500%) blur(5px)
+// 	100%
+// 		filter brightness(35%) blur(0)
+
+.profile-activities
+	horizontal-wrap
+
+.activities-footer
+	margin-top 0
+
+// Margin between activity boxes
+const month-margin = 0.4rem
+const box-size = 11px
+const box-margin = 2px
+
+.activities-month
+	display grid
+	grid-template-columns repeat(4, box-size)
+	grid-gap box-margin
+	// width calc(100% / 6 - month-margin)
+	margin 0 calc(month-margin / 2)
+	margin-bottom content-padding
+
+.activities-week
+	display grid
+	grid-template-rows repeat(5, box-size) month-margin repeat(2, box-size)
+	grid-template-columns box-size
+	grid-gap box-margin
+
+.box
+	width 100%
+	height 100%
+	border-radius 1px
+	background hsla(link-color-h, link-color-s, link-color-l, 0.75)
+
+	:hover
+		cursor pointer
+		background link-hover-color
+
+	[data-count="0"]
+		background reverse-light-color
+
+		:hover
+			cursor default
+			background reverse-light-color
+
+.anime-studios
+	horizontal-wrap
+	justify-content center
+	margin-bottom typography-margin
+
+.anime-studio
+	genre-tag
+
+> 800px
+	.anime-studios
+		justify-content flex-start
+		margin-bottom 0
+
+.profile-image
+	object-fit cover
+	width 100%
+	height 100%
+
+.profile-image-container
+	flex-basis profile-image-size
+	flex-shrink 0
+	width profile-image-size
+	height profile-image-size
+	max-width profile-image-size
+	max-height profile-image-size
+	border-radius ui-element-border-radius
+	overflow hidden
+
+#nick
+	margin-bottom 1rem
+
+	> a
+		color white
+
+.no-data
+	width 100%
+	text-align center

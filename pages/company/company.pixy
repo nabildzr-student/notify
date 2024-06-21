@@ -1,0 +1,107 @@
+component CompanyPage(company *arn.Company, studioAnime, producedAnime, licensedAnime []*arn.Anime, closeCompanies []*arn.Company, distances map[string]float64, rating *arn.AnimeRating, user *arn.User)
+	CompanyTabs(company, user)
+	
+	.company-page
+		.company-header
+			h1.company-name.mountable= company.Name.English
+
+			.company-description.mountable
+				div!= markdown.Render(company.Description)
+
+			CompanyAnimes("Animated:", studioAnime, user)
+			CompanyAnimes("Produced:", producedAnime, user)
+			CompanyAnimes("Licensed:", licensedAnime, user)
+		
+		.company-sidebar
+			h3.mountable Ratings
+
+			table.company-rating-info-table.mountable
+				tbody
+					tr.mountable
+						td.company-rating-info-key Overall:
+						td.company-rating-info-value
+							CompanyRating(rating.Overall, rating.Count.Overall, user)
+
+					tr.mountable
+						td.company-rating-info-key Story:
+						td.company-rating-info-value
+							CompanyRating(rating.Story, rating.Count.Story, user)
+
+					tr.mountable
+						td.company-rating-info-key Visuals:
+						td.company-rating-info-value
+							CompanyRating(rating.Visuals, rating.Count.Visuals, user)
+							
+					tr.mountable
+						td.company-rating-info-key Soundtrack:
+						td.company-rating-info-value
+							CompanyRating(rating.Soundtrack, rating.Count.Soundtrack, user)
+
+			if company.Location.Latitude != 0 && company.Location.Longitude != 0
+				h3.mountable Location
+				iframe.company-location.mountable(src="https://www.google.com/maps/embed/v1/place?q=" + fmt.Sprint(company.Location.Latitude) + "," + fmt.Sprint(company.Location.Longitude) + "&key=AIzaSyAsx6fhqRGaMLTixIJMIZBU4Mg6HJmvQf0", importance="low", title=company.Name.English + " location map")
+			
+			if len(closeCompanies) > 0
+				h3.mountable Within 1 km radius
+
+				ul.mountable
+					each closeCompany in closeCompanies
+						li.mountable(data-mountable-type="close-company")
+							a(href=closeCompany.Link())= closeCompany.Name.English
+							span.company-distance= fmt.Sprintf(" - %.0f m", distances[closeCompany.ID] * 1000)
+			
+			h3.mountable Links
+			
+			.light-button-group.mountable
+				each link in company.Links
+					a.light-button.mountable(href=link.URL, target="_blank", data-mountable-type="company-link")
+						if strings.ToLower(link.Title) == "wikipedia"
+							Icon("wikipedia-w")
+						else
+							Icon("external-link")
+						span= link.Title
+
+				if company.Email != ""
+					a.light-button.mountable(href="mailto:" + company.Email, data-mountable-type="company-link")
+						Icon("envelope")
+						span Email
+				
+				a.light-button.mountable(href="/api" + company.Link(), target="_blank", data-mountable-type="company-link")
+					Icon("code")
+					span API
+			
+			//- if len(company.Name.Synonyms) > 0
+			//- 	h3 Synonyms
+			//- 	ul
+			//- 		each synonym in company.Name.Synonyms
+			//- 			li= synonym
+			
+			//- if len(company.Tags) > 0
+			//- 	h3 Tags
+			//- 	ul
+			//- 		each tag in company.Tags
+			//- 			li= tag
+
+component CompanyAnimes(label string, animes []*arn.Anime, user *arn.User)
+	if len(animes) > 0
+		if label != ""
+			h3.mountable= label
+		
+		.company-anime.mountable
+			each anime in animes
+				CompanyAnime(anime, user)
+
+component CompanyAnime(anime *arn.Anime, user *arn.User)
+	a.company-anime-item.tip(href=anime.Link(), aria-label=anime.Title.ByUser(user))
+		img.company-anime-item-image.lazy(data-src=anime.ImageLink("small"), data-webp="true", data-color=anime.AverageColor(), alt=anime.Title.ByUser(user))
+
+component CompanyAnimeNoTip(anime *arn.Anime, user *arn.User)
+	a.company-anime-item(href=anime.Link(), title=anime.Title.ByUser(user))
+		img.company-anime-item-image.lazy(data-src=anime.ImageLink("small"), data-webp="true", data-color=anime.AverageColor(), alt=anime.Title.ByUser(user))
+
+component CompanyTabs(company *arn.Company, user *arn.User)
+	.tabs
+		Tab("Company", "building", company.Link())
+		if user != nil
+			Tab("Edit", "pencil", company.Link() + "/edit")
+		Tab("History", "history", company.Link() + "/history")

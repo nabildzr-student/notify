@@ -1,0 +1,31 @@
+component Quotes(quotes []*arn.Quote, nextIndex int, user *arn.User)
+	h1.page-title Quotes
+
+	QuotesTabs
+
+	.corner-buttons
+		if user != nil
+			if user.DraftIndex().QuoteID == ""
+				button.action(data-action="newObject", data-trigger="click", data-type="quote")
+					Icon("plus")
+					span Add quote
+			else
+				a.button(href="/quote/" + user.DraftIndex().QuoteID + "/edit")
+					Icon("pencil")
+					span Edit draft
+
+	#load-more-target.quotes
+		QuotesScrollable(quotes, user)
+
+	if nextIndex != -1
+		.buttons
+			LoadMore(nextIndex)
+
+component QuotesScrollable(quotes []*arn.Quote, user *arn.User)
+	each quote in quotes
+		QuotePreview(quote, user)
+
+component QuotesTabs
+	.tabs
+		Tab("Latest", "quote-left", "/quotes")
+		Tab("Best", "heart", "/quotes/best")

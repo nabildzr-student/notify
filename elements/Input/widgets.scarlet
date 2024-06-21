@@ -1,0 +1,45 @@
+.widget
+	vertical
+	flex 1
+	margin content-padding-half
+
+.widget-section
+	vertical
+	width 100%
+
+.widget-section-with-preview
+	horizontal
+
+.widget-section-preview
+	display flex
+	justify-content center
+	align-items center
+	margin-left 1rem
+
+	img
+		anime-mini-item-image
+
+.widget-title
+	horizontal
+	align-items center
+	padding-bottom 0.5rem
+	border-bottom 1px solid rgba(0, 0, 0, 0.1)
+	// We need !important here to overwrite the h3:first-child rule
+	margin 1rem 0 !important
+
+.widget-ui-element
+	vertical-wrap
+	ui-element
+	transition border transition-speed ease, background transition-speed ease, transform transition-speed ease, color transition-speed ease
+	margin-bottom 1rem
+	padding 0.5rem 1rem
+	width 100%
+	// max-width 700px
+
+.widget-form
+	width 100%
+	max-width 650px
+	margin 0 auto
+
+.indent
+	margin-left 1rem

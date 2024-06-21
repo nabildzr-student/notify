@@ -1,0 +1,21 @@
+component GlobalPaymentHistory(payments []*arn.PayPalPayment)
+	AdminTabs
+
+	h1.page-title All Payments
+
+	table
+		thead
+			tr.mountable
+				th User
+				th.history-price Amount
+				th.history-price Currency
+				th.history-date Date
+		tbody
+			each payment in payments
+				tr.mountable
+					td
+						a(href=payment.User().Link())= payment.User().Nick
+					td.history-price= payment.Amount
+					td.history-price= payment.Currency
+					td.history-date
+						time.utc-date(datetime=payment.Created)

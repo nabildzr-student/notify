@@ -1,0 +1,41 @@
+component Episode(anime *arn.Anime, episode *arn.Episode, episodeIndex int, uploaded bool, user *arn.User)
+	h1
+		a(href=anime.Link())= anime.Title.ByUser(user)
+	
+	.episode-navigation-container
+		if episodeIndex > 0
+			.episode-arrow.episode-arrow-previous
+				a.light-button(href=episode.Previous().Link(), title="Previous episode")
+					RawIcon("chevron-left")
+		
+		.episode-video
+			if uploaded
+				.video-container(id="stream-test")
+					video.video.lazy.action(data-action="toggleFullscreen", data-trigger="dblclick", data-id="stream-test")
+						source(data-src=fmt.Sprintf("https://arn.sfo2.cdn.digitaloceanspaces.com/videos/anime/%s/%d.webm", anime.ID, episode.Number), data-type="video/webm")
+						track(label="English", kind="subtitles", srclang="en", src=fmt.Sprintf("/anime/%s/episode/%d/subtitles/en", anime.ID, episode.Number), default)
+
+					VideoControls("stream-test", time.Duration(0))
+			else
+				.video-container.episode-not-available(title="Episode not available yet")
+		
+		//- a(href=anime.Link(), title=anime.Title.ByUser(user))
+		//- 	img.anime-cover-image.lazy(data-src=anime.ImageLink("large"), data-webp="true", data-color=anime.AverageColor(), alt=anime.Title.ByUser(user))
+
+		if episodeIndex < len(anime.Episodes()) - 1
+			.episode-arrow.episode-arrow-next
+				a.light-button(href=episode.Next().Link(), title="Next episode")
+					RawIcon("chevron-right")
+
+	h3.episode-view-number= "Episode " + strconv.Itoa(episode.Number)
+
+	if episode.Title.Japanese != ""
+		.episode-view-title
+			Japanese(episode.Title.Japanese)
+
+	if validate.DateTime(episode.AiringDate.Start)
+		p.episode-view-airing-date
+			time.utc-airing-date(datetime=episode.AiringDate.Start, data-end-date=episode.AiringDate.End, data-episode-number=episode.Number)= episode.AiringDate.StartDateHuman()
+	
+	footer.footer
+		p Make sure to support the anime you're watching by buying officially released Blu-rays and merchandise.

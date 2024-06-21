@@ -1,0 +1,36 @@
+component Forum(tag string, threads []*arn.Thread, threadsPerPage int)
+	h1.page-title Forum
+
+	ForumTabs
+
+	.forum
+		ThreadList(threads)
+
+	.buttons
+		button#new-thread.page-main-action.action(data-action="load", data-trigger="click", data-url="/new/thread")
+			Icon("plus")
+			span New thread
+		//- if len(threads) == threadsPerPage
+		//- 	LoadMore
+
+component ThreadList(threads []*arn.Thread)
+	if len(threads) == 0
+		p.no-data.mountable No threads found.
+	else
+		each thread in threads
+			ThreadLink(thread)
+
+component ForumTabs
+	.tabs
+		ForumTab("All", "", "list")
+		ForumTab("General", "general", "list")
+		ForumTab("News", "news", "list")
+		ForumTab("Anime", "anime", "list")
+		ForumTab("Updates", "update", "list")
+		ForumTab("Suggestions", "suggestion", "list")
+		ForumTab("Bugs", "bug", "list")
+
+component ForumTab(title string, category string, icon string)
+	a.tab.action(href=strings.TrimSuffix("/forum/" + category, "/"), data-action="diff", data-trigger="click")
+		Icon(arn.GetForumIcon(category))
+		span.tab-text= title

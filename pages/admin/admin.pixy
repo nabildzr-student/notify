@@ -1,0 +1,97 @@
+component AdminTabs
+	.tabs
+		Tab("Server", "server", "/admin")
+		Tab("WebDev", "html5", "/admin/webdev")
+		Tab("Crashes", "exclamation", "/admin/crashes")
+		Tab("Client errors", "exclamation", "/admin/errors/client")
+		Tab("Registrations", "user-plus", "/admin/registrations")
+		Tab("Purchases", "shopping-cart", "/admin/purchases")
+		Tab("Payments", "paypal", "/admin/payments")
+	
+	.corner-buttons
+		a.button(href="/editor", aria-label="Editor")
+			Icon("pencil")
+			span.tab-text Editor
+
+component Admin(user *arn.User, platform, family, platformVersion, kernelVersion string, cpuUsage, memUsage, diskUsage float64, cpuModel string, memTotal, diskTotal uint64, memStats *runtime.MemStats)
+	h1.page-title Admin Panel
+
+	AdminTabs
+
+	.admin
+		.admin-widget.mountable
+			h3.widget-title Usage
+
+			table
+				tbody
+					tr
+						td.admin-info-key CPU usage:
+						td.admin-info-value
+							span= int(cpuUsage + 0.5)
+							span %
+					tr
+						td.admin-info-key Memory usage:
+						td.admin-info-value
+							span= int(memUsage + 0.5)
+							span %
+					tr
+						td.admin-info-key Disk usage:
+						td.admin-info-value
+							span= int(diskUsage + 0.5)
+							span %
+		
+		.admin-widget.mountable
+			h3.widget-title OS
+
+			table
+				tbody
+					tr
+						td.admin-info-key Platform:
+						td.admin-info-value= platform
+					tr
+						td.admin-info-key Family:
+						td.admin-info-value= family
+					tr
+						td.admin-info-key Version:
+						td.admin-info-value= platformVersion
+					tr
+						td.admin-info-key Kernel:
+						td.admin-info-value= kernelVersion
+
+		.admin-widget.mountable
+			h3.widget-title Hardware
+
+			table
+				tbody
+					tr
+						td.admin-info-key CPU model:
+						td.admin-info-value= cpuModel
+					
+					tr
+						td.admin-info-key CPU cores:
+						td.admin-info-value= runtime.NumCPU()
+					
+					tr
+						td.admin-info-key RAM:
+						td.admin-info-value= humanize.IBytes(memTotal)
+
+					tr
+						td.admin-info-key Disk:
+						td.admin-info-value= humanize.IBytes(diskTotal)
+
+		.admin-widget.mountable
+			h3.widget-title Go
+
+			table
+				tbody
+					tr
+						td.admin-info-key Version:
+						td.admin-info-value= runtime.Version()
+					
+					tr
+						td.admin-info-key Goroutines:
+						td.admin-info-value= humanize.Comma(int64(runtime.NumGoroutine()))
+					
+					tr
+						td.admin-info-key Objects:
+						td.admin-info-value= humanize.Comma(int64(memStats.HeapObjects))

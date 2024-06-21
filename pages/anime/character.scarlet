@@ -1,0 +1,27 @@
+.characters
+	horizontal-wrap
+
+.character
+	vertical
+	align-items center
+	margin 0.5rem
+	transform scale(1)
+	default-transition
+
+	:hover
+		.image-title
+			opacity 1
+
+.character-image-medium
+	width 112px
+	height 112px
+	border-radius 5%
+	box-shadow shadow-medium
+	object-fit cover
+
+.character-image-small
+	width character-image-small-width
+	height character-image-small-height
+	border-radius ui-element-border-radius
+	box-shadow shadow-light
+	object-fit cover

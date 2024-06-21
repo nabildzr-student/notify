@@ -1,0 +1,6 @@
+component GroupFeed(group *arn.Group, member *arn.GroupMember, user *arn.User)
+	GroupHeader(group, member, user)
+
+	.group-view
+		.group-feed
+			Comments(group, user)

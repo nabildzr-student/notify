@@ -1,0 +1,31 @@
+component SoundTrackLyricsPage(track *arn.SoundTrack, user *arn.User)
+	SoundTrackTabs(track, user)
+
+	if track.Title.ByUser(user) == ""
+		h1.mountable untitled
+	else
+		h1.mountable= track.Title.ByUser(user)
+
+	.soundtrack-lyrics
+		if !track.HasLyrics()
+			p.no-data.mountable No lyrics available for this track.
+		else
+			if track.Lyrics.Native != ""
+				.lyrics-column
+					h3.widget-title.mountable(data-mountable-type="native") Native
+					RenderLyrics(track.Lyrics.Native, "native")
+			
+			if track.Lyrics.Romaji != ""
+				.lyrics-column
+					h3.widget-title.mountable(data-mountable-type="romaji") Romaji
+					RenderLyrics(track.Lyrics.Romaji, "romaji")
+
+component RenderLyrics(text string, mountType string)
+	each paragraph in strings.Split(text, "\n\n")
+		p.lyrics-paragraph
+			each line in strings.Split(paragraph, "\n")
+				if mountType == "native"
+					.lyrics-line.mountable(data-mountable-type=mountType)
+						Japanese(line)
+				else
+					.lyrics-line.mountable(data-mountable-type=mountType)= line

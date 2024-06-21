@@ -1,0 +1,23 @@
+component AudioPlayer
+	#audio-player
+		#audio-player-anime-info.hidden
+			a#audio-player-anime-link(href="", title="", aria-label="Anime image")
+				img#audio-player-anime-image.lazy.hidden(data-src="", data-webp="true", alt="Anime cover")
+		
+		a#audio-player-track-title(href="", aria-label="Track title")
+
+		#audio-player-controls
+			button#audio-player-prev.audio-player-side-button.action(data-action="playPreviousTrack", data-trigger="click", aria-label="Previous track")
+				RawIcon("step-backward")
+
+			.audio-player-play-pause-container
+				button#audio-player-play.action(data-action="resumeAudio", data-trigger="click", aria-label="Play")
+					RawIcon("play")
+				
+				button#audio-player-pause.fade-out.action(data-action="pauseAudio", data-trigger="click", aria-label="Pause")
+					RawIcon("pause")
+
+			button#audio-player-next.audio-player-side-button.action(data-action="playNextTrack", data-trigger="click", aria-label="Next track")
+				RawIcon("step-forward")
+		
+		input#audio-player-volume.action(data-action="setVolume", data-trigger="input", type="range", min="0", max="100", value="50", aria-label="Change volume")

@@ -1,0 +1,46 @@
+component SettingsPersonal(user *arn.User)
+	SettingsTabs
+
+	h1.page-title Personal settings
+	
+	.settings
+		.widget.mountable(data-api="/api/user/" + user.ID)
+			h3.widget-title
+				Icon("user")
+				span Personal
+
+			InputText("Nick", user.Nick, "Username", "Your username on notify.moe", 25)
+			InputTextArea("Introduction", user.Introduction, "Introduction", "Tell us a little bit about yourself", 2000)
+
+		.widget.mountable(data-api="/api/settings/" + user.ID)
+			h3.widget-title
+				Icon("camera")
+				span Avatar
+			
+			AvatarInput(user)
+		
+		.widget.mountable(data-api="/api/settings/" + user.ID)
+			h3.widget-title
+				Icon("picture-o")
+				span Cover
+			
+			InputFileUpload("cover-input", "File", "image", "/api/upload/user/cover")
+
+			.cover-preview(title="Recommended: 1920 x 450 | PNG or JPG")
+				img.profile-cover.cover-input-preview.lazy(data-src=user.CoverLink("small"), data-webp="true", alt="Cover image")
+			
+			if !user.IsPro()
+				footer.footer
+					p PRO account required.
+
+component AvatarInput(user *arn.User)
+	InputFileUpload("avatar-input", "File", "image", "/api/upload/user/image")
+
+	.profile-image-container.avatar-preview
+		if user.HasAvatar()
+			img.avatar-input-preview.profile-image.lazy(data-src=user.AvatarLink("large"), data-webp="true", alt="Profile image", title="Recommended: 560 x 560 | PNG or JPG")
+		else
+			img.avatar-input-preview.profile-image.hidden(src=user.AvatarLink("large"), alt="Profile image", title="Recommended: 560 x 560 | PNG or JPG")
+
+			#avatar-input-preview-svg
+				SVGProfileImage(user)

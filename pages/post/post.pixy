@@ -1,0 +1,10 @@
+component Post(post *arn.Post, user *arn.User)
+	.thread
+		.posts
+			Postable(post, user, true, true, "")
+
+			if user != nil && user.Role == "admin"
+				.buttons
+					a.button.mountable(href=post.Link() + "/edit")
+						Icon("edit")
+						span Edit (admin)

@@ -1,0 +1,169 @@
+// Colors
+text-color-h = 0
+text-color-s = 0%
+text-color-l = 23.5%
+text-color = hsl(text-color-h, text-color-s, text-color-l)
+
+link-color-h = 7
+link-color-s = 87%
+link-color-l = 45%
+link-color = hsl(link-color-h, link-color-s, link-color-l)
+
+bg-color-h = 0
+bg-color-s = 0%
+bg-color-l = 96%
+bg-color = hsl(bg-color-h, bg-color-s, bg-color-l)
+
+ui-background-h = bg-color-h
+ui-background-s = bg-color-s
+ui-background-l = 99.5%
+ui-background = hsl(ui-background-h, ui-background-s, ui-background-l)
+
+link-hover-color = hsl(link-color-h, link-color-s, calc(link-color-l + 8%))
+link-active-color = link-hover-color
+pro-color = hsla(0, 100%, 73%, 0.87)
+anime-alternative-title-color = hsla(0, 0%, 0%, 0.5)
+reverse-light-color = rgba(0, 0, 0, 0.05)
+reverse-light-hover-color = rgba(0, 0, 0, 0.1)
+reverse-light-lite-color = rgba(0, 0, 0, 0.02)
+
+theme-white = bg-color
+theme-black = text-color
+
+// UI
+ui-border-color = rgba(0, 0, 0, 0.1)
+ui-border = 1px solid ui-border-color
+ui-hover-border-color = rgba(0, 0, 0, 0.15)
+ui-hover-border = 1px solid ui-hover-border-color
+
+// ui-hover-background = rgb(254, 254, 254)
+// ui-background = linear-gradient(to bottom, rgba(0, 0, 0, 0.02) 0%, rgba(0, 0, 0, 0.037) 100%)
+// ui-hover-background = linear-gradient(to bottom, rgba(0, 0, 0, 0.01) 0%, rgba(0, 0, 0, 0.027) 100%)
+ui-disabled-color = rgb(224, 224, 224)
+const ui-element-border-radius = 3px
+
+// Scrollbar
+scrollbar-size = 12px
+scrollbar-border-size = 3px
+scrollbar-border-radius = 7px
+scrollbar-thumb-color = hsla(text-color-h, text-color-s, text-color-l, 0.4)
+scrollbar-thumb-hover-color = hsla(text-color-h, text-color-s, text-color-l, 0.6)
+scrollbar-track-color = transparent
+
+// Input
+input-height = 2.5rem
+input-focus-border-color = rgb(248, 165, 130)
+
+// Button
+button-color = link-color
+button-hover-color = white
+button-hover-background = link-hover-color
+
+// Tab
+tab-background = rgba(0, 0, 0, 0.02)
+tab-hover-background = bg-color
+tab-active-color = white
+tab-active-background = hsl(216, 68%, 42%)
+// tab-active-background = rgb(46, 85, 160)
+
+sidebar-background = rgba(0, 0, 0, 0.03)
+sidebar-opaque-background = ui-background
+
+// Forum
+post-highlight-color = rgba(248, 165, 130, 0.7)
+const forum-width = 830px
+const forum-thread-width = forum-width
+const comment-width = 600px
+const activity-width = comment-width
+const group-post-width = comment-width
+const post-avatar-text-margin = 0.5rem
+
+// Avatar
+const avatar-size = 50px
+
+// Badge
+badge-important-bg-color = rgb(215, 38, 15)
+badge-important-hover-bg-color = rgb(242, 60, 30)
+badge-important-text-color = white
+
+// Quote
+quote-color = hsl(0, 0%, 45%)
+quote-side-border-color = quote-color
+
+// Forum
+like-color = green
+unlike-color = rgb(255, 32, 12)
+delete-color = unlike-color
+permalink-color = blue
+
+table-row-hover-background = hsla(0, 0%, 0%, 0.01)
+anime-list-item-name-color = link-color
+
+// Calendar
+calendar-hover-color = rgba(255, 255, 255, 0.4)
+calendar-entry-seen-background = ui-background
+calendar-entry-seen-hover-background = ui-background
+
+// Tables
+table-width-normal = 1100px
+
+// Feature cards
+const feature-card-saturation = 83%
+const feature-card-lightness = 47%
+
+feature-card-color = hsl(348, feature-card-saturation, feature-card-lightness)
+feature-card-alternative-color = hsl(203, feature-card-saturation, feature-card-lightness)
+feature-card-icon-color = white
+
+// Tooltips
+tip-bg-color = white
+
+// Loading animation
+loading-anim-color = hsl(18, 89%, 74%)
+
+// Shadow
+shadow-light = 4px 4px 8px rgba(0, 0, 0, 0.05)
+shadow-medium = 6px 6px 12px rgba(0, 0, 0, 0.13)
+
+// Outline shadow
+outline-shadow-light = 0 0 6px rgba(0, 0, 0, 0.05)
+outline-shadow-medium = 0 0 6px rgba(0, 0, 0, 0.13)
+outline-shadow-heavy = 0 0 6px rgba(0, 0, 0, 0.6)
+
+// Distances
+const content-padding = 1.6rem
+const content-padding-half = calc(content-padding / 2)
+const content-padding-negative = calc(content-padding * -1)
+const content-line-height = 1.7em
+const typography-margin = 0.4rem
+const media-bottom-margin = 2rem
+
+// Sizes
+const anime-image-tiny-width = 39px
+const anime-image-tiny-height = 39px
+
+const anime-image-small-width = 55px
+const anime-image-small-height = 78px
+
+const anime-image-medium-width = 142px
+const anime-image-medium-height = 200px
+
+const anime-image-large-width = 250px
+const anime-image-large-height = 350px
+
+const character-image-small-width = 56px
+const character-image-small-height = 56px
+
+const grid-cell-margin = 0.5rem
+
+const user-pro-icon-size = 1.1rem
+
+const amv-large-width = 854px
+
+// Monospace font for `code` and `pre`
+const monospace-font-family = "Ubuntu Mono", "Consolas", monospace
+
+// Timings
+fade-speed = 150ms
+transition-speed = 150ms
+mountable-transition-speed = 150ms

@@ -1,0 +1,42 @@
+{
+	"fonts": [
+		"Ubuntu"
+	],
+	"styles": [
+		"config",
+		"mixins/layout",
+		"mixins/utils",
+		"mixins/effects",
+		"mixins/ui",
+		"mixins/sidebar",
+		"mixins/anime-grid",
+		"mixins/feature-card",
+		"mixins/horizontal-line",
+		"mixins/comments",
+		"mixins/input",
+		"reset",
+		"base",
+		"typography",
+		"mountable",
+		"layout",
+		"headers",
+		"grid",
+		"thread",
+		"tags",
+		"user",
+		"video",
+		"fade",
+		"embedded"
+	],
+	"scripts": {
+		"main": "main"
+	},
+	"push": [
+		"/styles",
+		"/scripts"
+	],
+	"ports": {
+		"http": 4000,
+		"https": 4001
+	}
+}

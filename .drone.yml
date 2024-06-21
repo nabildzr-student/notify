@@ -1,0 +1,30 @@
+kind: pipeline
+name: default
+
+steps:
+- name: test
+  image: golang
+  environment:
+    CGO_ENABLED: 0
+    ARN_ROOT: /drone/src
+  commands:
+  - apt-get update
+  - apt-get -y install nodejs npm make
+  - npm install -g typescript
+  - go version
+  - go mod download
+  - make tools
+  - make assets
+  - make server
+  - curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.43.0
+  - golangci-lint run
+  - make db
+  - go test -v -coverprofile=coverage.txt .
+
+- name: coverage
+  image: plugins/codecov
+  settings:
+    token:
+      from_secret: codecov-token
+    files:
+      - coverage.txt

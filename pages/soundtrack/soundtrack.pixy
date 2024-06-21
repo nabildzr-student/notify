@@ -1,0 +1,84 @@
+component SoundTrackPage(track *arn.SoundTrack, relatedTracks []*arn.SoundTrack, user *arn.User)
+	SoundTrackTabs(track, user)
+
+	.soundtrack-full-page
+		if track.Title.ByUser(user) == ""
+			h1.mountable untitled
+		else
+			h1.mountable= track.Title.ByUser(user)
+
+		.widget-form.soundtrack-media-list
+			each media in track.Media
+				.widget.mountable
+					h3.widget-title= media.Service
+					
+					.soundtrack-media.video-container
+						iframe.lazy.video(data-src=media.EmbedLink(), title=media.Service + " media source", allowfullscreen)
+					
+					if user != nil && media.Service == "Youtube" && track.File != ""
+						.buttons
+							button.action(data-action="playAudio", data-trigger="click", data-audio-src="/audio/" + track.File, data-media-id=track.ID)
+								Icon("play")
+								span Play in background
+
+			.widget.mountable
+				h3.widget-title Anime
+
+				.soundtrack-anime-list
+					each anime in track.Anime()
+						a.soundtrack-anime-list-item.tip(href=anime.Link(), aria-label=anime.Title.ByUser(user))
+							img.soundtrack-anime-list-item-image.lazy(data-src=anime.ImageLink("small"), data-webp="true", data-color=anime.AverageColor(), alt=anime.Title.ByUser(user))
+
+			if len(track.Links) > 0
+				.widget.mountable
+					h3.widget-title Links
+					ul.soundtrack-links
+						for _, link := range track.Links
+							li
+								a.soundtrack-link(href=link.URL, target="_blank")= link.Title
+
+			if len(relatedTracks) > 0
+				.widget.mountable
+					h3.widget-title Related
+					ul.related-tracks
+						each relatedTrack in relatedTracks
+							li
+								a(href=relatedTrack.Link())= relatedTrack.TitleByUser(user)
+			
+			.widget.mountable
+				h3.widget-title Tags
+
+				.tags
+					each tag in track.Tags
+						a.tag(href="/soundtracks/tag/" + tag)= tag
+
+			.widget.mountable
+				h3.widget-title Comments
+				Comments(track, user)
+
+		footer.footer.mountable
+			if track.EditedBy != ""
+				span Edited 
+				time.utc-date(datetime=track.Edited)
+				span  by 
+				span= track.Editor().Nick
+			else
+				span Posted 
+				time.utc-date(datetime=track.Created)
+				span  by 
+				span= track.Creator().Nick
+
+			span .
+
+component SoundTrackTabs(track *arn.SoundTrack, user *arn.User)
+	.tabs
+		LikeTab(strconv.Itoa(len(track.Likes)), "heart", "track", track, user)
+		Tab("Soundtrack", "music", track.Link())
+
+		if track.HasLyrics()
+			Tab("Lyrics", "font", track.Link() + "/lyrics")
+
+		if user != nil
+			Tab("Edit", "pencil", track.Link() + "/edit")
+		
+		Tab("History", "history", track.Link() + "/history")

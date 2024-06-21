@@ -1,0 +1,33 @@
+component AnimeEditorListFull(title string, missing []*arn.Anime, count int, pageURI string, generateSearchLink func(*arn.Anime) string, user *arn.User)
+	EditorTabs(pageURI, user)
+	h1.editor-list-page-title.mountable= title
+	footer.footer.editor-list-entry-count.mountable= strconv.Itoa(count) + " anime"
+	AnimeEditorList(missing, pageURI, generateSearchLink)
+
+component AnimeEditorList(animes []*arn.Anime, pageURI string, generateSearchLink func(*arn.Anime) string)
+	table.editor-list
+		thead
+			tr.mountable
+				th Score
+				th Title
+				th Type
+				th Year
+
+				if generateSearchLink != nil
+					th Tools
+		tbody
+			each anime in animes
+				tr.mountable
+					td= anime.ScoreHumanReadable()
+					td
+						a(href=anime.Link(), target="_blank", rel="noopener")
+							img.anime-list-item-image.lazy(data-src=anime.ImageLink("small"), data-webp="true", data-color=anime.AverageColor(), alt=anime.Title.Canonical)
+							span= anime.Title.Canonical
+					td= anime.Type
+					td
+						if len(anime.StartDate) >= 4
+							span= anime.StartDate[:4]
+					
+					if generateSearchLink != nil
+						td
+							a(href=generateSearchLink(anime), target="_blank", rel="noopener") 🔍

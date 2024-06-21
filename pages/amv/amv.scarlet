@@ -1,0 +1,71 @@
+.amvs
+	vertical
+
+.amv
+	width 100%
+	margin 1rem 0
+
+	.video-container
+		box-shadow shadow-medium
+
+.amv-footer
+	media-footer
+
+.amv-page
+	vertical
+	align-items flex-start
+	max-width amv-large-width !important
+
+	.widget
+		justify-content flex-start
+		width 100%
+
+.amv-page-title
+	width 100%
+	text-align center
+
+.amv-main-anime
+	display flex
+	margin-bottom 1rem
+
+.amv-extra-anime
+	horizontal-wrap
+	justify-content left
+
+	a
+		display block
+		margin 0.25rem
+
+	img
+		border-radius ui-element-border-radius
+		width anime-image-small-width
+		height anime-image-small-height
+
+.amv-editors
+	justify-content flex-start !important
+
+.amv-links
+	//
+
+.amv-link
+	//
+
+.amv-details
+	margin-top content-padding
+
+	p
+		margin 0
+
+> 500px
+	.amvs
+		horizontal-wrap
+		justify-content flex-start
+		margin-top 0
+
+	.amvs
+		.amv
+			max-width 520px
+
+	.amv-page
+		.amv
+			max-width amv-large-width

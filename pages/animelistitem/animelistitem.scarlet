@@ -1,0 +1,24 @@
+.anime-list-item-view
+	vertical
+	width 100%
+	max-width 530px
+	margin 0 auto
+	margin-top content-padding-half
+
+.anime-list-item-others
+	display grid
+	grid-template-columns repeat(auto-fill, calc(50% - content-padding / 2))
+	grid-gap content-padding
+
+.anime-list-item-rating-edit
+	horizontal
+	justify-content space-between
+	width 100%
+
+	.widget-section
+		max-width 20%
+
+.anime-list-item-rating-edit
+	[data-status="completed"]
+		input[value="0"]
+			border-color rgb(232, 0, 0)

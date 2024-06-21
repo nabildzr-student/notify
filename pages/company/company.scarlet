@@ -1,0 +1,56 @@
+.company-page
+	vertical
+	width 100%
+	max-width 1700px
+	margin 0 auto
+
+.company-header
+	vertical
+	flex 1
+
+.company-sidebar
+	sidebar
+
+.company-distance
+	opacity 0.75
+
+> 1250px
+	.company-page
+		horizontal
+
+	.company-sidebar
+		sidebar-medium
+
+> 1400px
+	.company-sidebar
+		sidebar-big
+
+.company-name,
+.company-description
+	text-align left
+
+.company-location
+	width 100%
+	height 300px
+
+.company-anime
+	horizontal-wrap
+
+.company-anime-item
+	anime-mini-item
+
+.company-anime-item-image
+	anime-mini-item-image
+
+.company-rating-info-table
+	vertical
+	margin 0
+
+	tr
+		horizontal
+
+.company-rating-info-key
+	flex 1
+
+.company-rating-info-value
+	text-align right

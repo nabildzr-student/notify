@@ -1,0 +1,62 @@
+.data-comparisons
+	vertical
+	width 100%
+	max-width 1200px
+	margin 0 auto
+
+.data-comparison
+	vertical
+	padding 0.5rem 0.75rem
+	margin 0.5rem
+	border-left 3px solid ui-border-color
+
+.data-comparison-header
+	horizontal
+
+.data-comparison-image-container
+	margin-right 0.75rem
+
+.data-comparison-image
+	anime-list-item-image
+
+.data-comparison-title
+	horizontal
+	font-size 1.2rem
+	flex 1
+	align-items center
+
+.data-comparison-tool
+	display flex
+	padding 0.5rem
+
+.data-comparison-differences
+	vertical
+	margin-top 0.5rem
+
+.data-comparison-difference
+	vertical
+	ui-element
+	position relative
+	padding 0.5rem 0.75rem
+	margin-bottom 0.5rem
+
+.data-comparison-difference-title
+	font-weight bold
+
+.data-comparison-difference-details
+	horizontal
+
+.data-comparison-difference-detail
+	flex 1
+	padding 0.5rem 0.75rem
+
+.data-comparison-difference-ignore
+	position absolute
+	top 0.5rem
+	right 0.5rem
+	width 30px
+	height 30px
+	padding 0
+	display flex
+	justify-content center
+	align-items center

@@ -1,0 +1,10 @@
+component GroupTabs(group *arn.Group, member *arn.GroupMember, user *arn.User)
+	.tabs.mountable.never-unmount
+		Tab("Posts", "comment", group.Link())
+		Tab("Info", "info-circle", group.Link() + "/info")
+		Tab("Members", "user", group.Link() + "/members")
+
+		if member != nil && member.Role == "founder"
+			Tab("Edit", "pencil", group.Link() + "/edit")
+			Tab("Image", "image", group.Link() + "/edit/image")
+			Tab("History", "history", group.Link() + "/history")

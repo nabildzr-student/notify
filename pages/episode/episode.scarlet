@@ -1,0 +1,44 @@
+.episode-view-number
+	text-align center
+	margin 0
+
+.episode-view-title
+	text-align center
+	margin-top 0.5rem
+
+.episode-view-airing-date
+	text-align center
+	font-size 0.9rem
+	half-opacity-text
+
+.episode-navigation-container
+	horizontal
+	justify-content center
+	align-items center
+	position relative
+	margin-bottom content-padding
+
+.episode-video
+	width 100%
+	max-width amv-large-width
+
+.episode-not-available
+	background reverse-light-color
+
+.episode-arrow
+	position absolute
+	top 50%
+	z-index 1
+
+.episode-arrow-previous
+	left calc(content-padding * -1 + 3px)
+
+.episode-arrow-next
+	right calc(content-padding * -1 + 3px)
+
+> 500px
+	.episode-arrow-previous
+		left 0
+
+	.episode-arrow-next
+		right 0

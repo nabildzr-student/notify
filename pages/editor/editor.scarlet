@@ -1,0 +1,67 @@
+.editor-list-page-title
+	margin-bottom 0
+	margin-top 1rem
+
+.editor-list
+	img
+		margin-right 1rem
+
+.editor-filters
+	//
+
+.editor-list-entry-count
+	margin-top 0
+	margin-bottom content-padding
+
+.editor-score
+	feature-card-footer
+
+.feature-card-color-soundtrack
+	background hsl(200, feature-card-saturation, feature-card-lightness) !important
+
+.feature-card-color-company
+	background hsl(150, feature-card-saturation, feature-card-lightness) !important
+
+.feature-card-color-character
+	background hsl(273, feature-card-saturation, feature-card-lightness) !important
+
+.search-links
+	horizontal
+	margin 0 auto
+
+.search-link
+	margin 0.2rem
+
+> 1000px
+	.search-links
+		vertical
+		position fixed
+		top 50%
+		right content-padding
+		transform translateY(-50%)
+
+.google-badge,
+.shoboi-badge
+	background rgba(255, 255, 255, 0.80) !important
+
+	:hover
+		background rgba(255, 255, 255, 1) !important
+
+.anilist-badge
+	background rgba(31, 38, 49, 0.80) !important
+
+	:hover
+		background rgba(31, 38, 49, 1) !important
+
+.mal-badge
+	background rgba(46, 81, 181, 0.80) !important
+
+	:hover
+		background rgba(46, 81, 181, 1) !important
+
+> 1550px
+	.editor-filters
+		position fixed
+		right content-padding
+		top content-padding
+		z-index 1

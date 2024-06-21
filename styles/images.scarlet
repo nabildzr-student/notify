@@ -1,0 +1,24 @@
+mixin image-appear
+	animation color-preview 400ms forwards
+
+.lazy
+	visibility hidden
+	opacity 0
+
+.element-color-preview
+	visibility visible
+	image-appear
+
+animation color-preview
+	0%
+		opacity 0
+	100%
+		opacity 1
+
+.element-found
+	visibility visible
+	image-appear
+
+.element-not-found
+	visibility hidden
+	opacity 0

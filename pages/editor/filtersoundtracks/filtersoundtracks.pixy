@@ -1,0 +1,23 @@
+component SoundTracksEditorListFull(title string, missing []*arn.SoundTrack, count int, pageURI string, generateSearchLink func(*arn.SoundTrack) string, user *arn.User)
+	EditorTabs(pageURI, user)
+	h1.editor-list-page-title.mountable= title
+	.footer.editor-list-entry-count.mountable= strconv.Itoa(count) + " soundtracks"
+	SoundTracksEditorList(missing, generateSearchLink, user)
+
+component SoundTracksEditorList(tracks []*arn.SoundTrack, generateSearchLink func(*arn.SoundTrack) string, user *arn.User)
+	table.editor-list
+		thead
+			tr.mountable
+				th Likes
+				th Title
+		tbody
+			each track in tracks
+				tr.mountable
+					td= len(track.Likes)
+					td
+						a(href=track.Link(), target="_blank", rel="noopener")= track.Title.ByUser(user)
+					
+					if generateSearchLink != nil
+						td
+							if generateSearchLink(track) != ""
+								a(href=generateSearchLink(track), target="_blank", rel="noopener") 🔍

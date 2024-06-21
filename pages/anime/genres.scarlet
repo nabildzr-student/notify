@@ -1,0 +1,12 @@
+.anime-genres
+	horizontal-wrap
+	justify-content center
+	margin-bottom typography-margin
+
+.anime-genre
+	genre-tag
+
+> 800px
+	.anime-genres
+		justify-content flex-start
+		margin-bottom 0

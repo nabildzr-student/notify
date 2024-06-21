@@ -1,0 +1,5 @@
+.anime-comments
+	comments-left
+
+	[data-standalone-page="true"]
+		margin 0 auto

@@ -1,0 +1,34 @@
+component AnimeGrid(animes []*arn.Anime, user *arn.User)
+	#load-more-target.anime-grid
+		AnimeGridScrollable(animes, user)
+
+component AnimeGridWithRelation(entries []*utils.AnimeWithRelatedAnime, user *arn.User)
+	#load-more-target.anime-grid
+		AnimeGridWithRelationScrollable(entries, user)
+
+component AnimeGridScrollable(animes []*arn.Anime, user *arn.User)
+	each anime in animes
+		.anime-grid-cell(data-added=(user != nil && user.AnimeList().Contains(anime.ID)))
+			AnimeImageLink(anime, "medium", user)
+			AnimeGridButton(anime, user)
+
+component AnimeImageLink(anime *arn.Anime, size string, user *arn.User)
+	a(href="/anime/" + anime.ID)
+		img.anime-grid-image.lazy(data-src=anime.ImageLink(size), data-webp="true", data-color=anime.AverageColor(), alt=anime.Title.Romaji)
+		.image-title
+			.image-title-text= anime.Title.ByUser(user)
+
+component AnimeGridWithRelationScrollable(entries []*utils.AnimeWithRelatedAnime, user *arn.User)
+	each entry in entries
+		.anime-grid-cell(data-added=(user != nil && user.AnimeList().Contains(entry.Anime.ID)))
+			a(href="/anime/" + entry.Anime.ID)
+				img.anime-grid-image.lazy(data-src=entry.Anime.ImageLink("medium"), data-webp="true", data-color=entry.Anime.AverageColor(), alt=entry.Anime.Title.Romaji)
+				.image-title
+					.image-title-text= entry.Anime.Title.ByUser(user)
+			
+			AnimeGridButton(entry.Anime, user)
+
+component AnimeGridButton(anime *arn.Anime, user *arn.User)
+	if user != nil && !user.AnimeList().Contains(anime.ID)
+		button.anime-grid-add-button.action(data-action="addAnimeToCollection", data-trigger="click", data-api="/api/animelist/" + user.ID, data-anime-id=anime.ID, aria-label="Add anime to my list")
+			RawIcon("plus")

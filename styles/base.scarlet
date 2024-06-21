@@ -1,0 +1,43 @@
+html
+	height 100%
+	font-family "Ubuntu", "Trebuchet MS", sans-serif
+	font-size 90%
+
+body
+	tab-size 4
+	overflow hidden
+	height 100%
+	color text-color
+	background-color bg-color
+	noise-strong
+
+a
+	color link-color
+	text-decoration none
+	default-transition
+
+	:hover
+		color link-hover-color
+		text-decoration none
+
+	:active
+		transform translateY(3px)
+
+	// &.active
+	// 	color link-active-color
+
+img
+	backface-visibility hidden
+	color transparent
+
+rt
+	user-select none
+
+.hidden
+	display none !important
+
+.text-center
+	text-align center
+
+.spacer
+	flex 1

@@ -1,0 +1,9 @@
+.activities
+	vertical
+	width 100%
+	max-width activity-width
+	margin 0 auto
+
+#load-new-activities
+	[data-count="0"]
+		display none

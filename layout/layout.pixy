@@ -1,0 +1,72 @@
+component Layout(ctx aero.Context, user *arn.User, openGraph *arn.OpenGraph, meta, tags []string, content string)
+	html(lang="en")
+		head
+			if openGraph != nil
+				title= openGraph.Tags["og:title"]
+			else
+				title= assets.Manifest.Name
+
+			//- Viewport
+			meta(name="viewport", content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes")
+
+			//- Open Graph
+			if openGraph != nil
+				if openGraph.Tags["og:video"] != ""
+					meta(name="twitter:card", content="player")
+				else
+					meta(name="twitter:card", content="summary")
+
+				//- Facebook App ID
+				meta(property="fb:app_id", content="915407915202908")
+				
+				for _, name := range meta
+					meta(name=name, content=openGraph.Meta[name])
+
+				for _, name := range tags
+					meta(property=name, content=openGraph.Tags[name])
+
+			link(rel="chrome-webstore-item", href="https://chrome.google.com/webstore/detail/hajchfikckiofgilinkpifobdbiajfch")
+			link(rel="manifest", href="/manifest.json")
+
+			//- Preconnect to CDN
+			link(rel="preconnect", href="//fonts.gstatic.com")
+			link(rel="preconnect", href="//media.notify.moe")
+			link(rel="dns-prefetch", href="//arn.sfo2.cdn.digitaloceanspaces.com")
+
+			//- Icons
+			link(rel="icon", type="image/webp", sizes="64x64", href="//media.notify.moe/images/brand/64.webp")
+			link(rel="icon", type="image/webp", sizes="128x128", href="//media.notify.moe/images/brand/128.webp")
+			link(rel="icon", type="image/webp", sizes="512x512", href="//media.notify.moe/images/brand/512.webp")
+			link(rel="icon", type="image/png", sizes="64x64", href="//media.notify.moe/images/brand/64.png")
+			link(rel="icon", type="image/png", sizes="128x128", href="//media.notify.moe/images/brand/128.png")
+			link(rel="icon", type="image/png", sizes="512x512", href="//media.notify.moe/images/brand/512.png")
+			link(rel="apple-touch-icon", sizes="180x180", type="image/png", href="//media.notify.moe/images/brand/180.png")
+
+			//- Styles
+			link(rel="stylesheet", href="/styles", importance="high")
+
+			//- Color of the embed sidebar in Discord,
+			//- also the color of tabs on mobile browsers.
+			meta(name="theme-color", content=assets.Manifest.ThemeColor)
+
+			//- Google site verification
+			meta(name="google-site-verification", content="1U-E2pDaYbFHyOSWl6AX3DvixQuDc4kfem9Kde_jZ8A")
+		body
+			#container(class=utils.GetContainerClass(ctx))
+				#columns
+					Sidebar(ctx.Get("term"), user)
+					Content(content)
+				
+				LoadingAnimation
+				StatusMessage
+				ExtensionNavigation(user)
+			
+			if user != nil
+				#user(data-id=user.ID, data-pro=user.IsPro(), data-theme=user.Settings().Theme)
+			
+			script(src="/scripts", importance="high", crossorigin="anonymous")
+			script(type="application/ld+json")!= assets.Organization
+
+component Content(content string)
+	#content-container
+		main#content.fade!= content

@@ -1,0 +1,94 @@
+component Sidebar(searchTerm string, user *arn.User)
+	aside#sidebar
+		//- User avatar
+		.user-image-container
+			if user != nil
+				AvatarNoTip(user)
+			else
+				a(href="/", aria-label="Anime Notifier")
+					img.user-image.lazy(src=utils.EmptyImage(), data-src="/images/brand/64.png", data-webp="true", alt="Anime Notifier")
+			
+			if user != nil
+				a.badge.sidebar-badge.left-badge(href="/settings", title="Settings")
+					RawIcon("cog")
+				
+				a#notification-icon.badge.sidebar-badge.right-badge(href="/notifications", title="Notifications")
+					RawIcon("bell")
+				
+				a#notification-count.badge.sidebar-badge.right-badge.badge-important.hidden(href="/notifications", title="Notifications") 0
+
+		//- Search
+		div(aria-label="Search")
+			.sidebar-button
+				Icon("search")
+				Search(searchTerm)
+				.speech-input.action(data-action="searchBySpeech", data-trigger="click", title="Speech input")
+					RawIcon("microphone")
+
+		//- Sidebar buttons
+		if user != nil
+			SidebarButton("List", "/+" + user.Nick + "/animelist/watching", "list")
+		else
+			SidebarButton("Home", "/", "home")
+		
+		SidebarButton("Activity", "/activity", "rss")
+		SidebarButton("Forum", "/forum", "comment")
+		SidebarButton("Explore", "/explore", "th")
+		SidebarButton("AMVs", "/amvs", "video-camera")
+		SidebarButton("Soundtracks", "/soundtracks", "headphones")
+		SidebarButton("Quotes", "/quotes", "quote-left")
+		SidebarButton("Groups", "/groups", "users")
+		SidebarButton("Users", "/users", "globe")
+
+		if user != nil
+			SidebarButton("Support", "/support", "heart")
+
+		//- Disabled:
+		//- SidebarButton("Companies", "/companies", "building")
+		//- SidebarButton("Dash", "/dashboard", "tachometer")
+		//- SidebarButton("Artworks", "/artworks", "paint-brush")
+		//- SidebarButton("AMVs", "/amvs", "video-camera")
+		//- SidebarButton("Games", "/games", "gamepad")
+		//- SidebarButton("Groups", "/groups", "users")
+		//- SidebarButton("Statistics", "/statistics", "pie-chart")
+		//- SidebarButton("Companies", "/companies", "building")
+		//- SidebarButton("Genres", "/genres", "clone")
+		//- SidebarButton("Characters", "/characters", "child")
+
+		.spacer
+
+		AudioPlayer
+		
+		if user != nil && (user.Role == "editor" || user.Role == "admin")
+			SidebarButton("Log", "/log", "list")
+			SidebarButton("Editor", "/editor", "pencil")
+
+		//- if user != nil && user.Role == "admin"
+		//- 	SidebarButton("Admin", "/admin", "wrench")
+
+		a.sidebar-link.action(href="#", data-action="nextTheme", data-trigger="click")
+			.sidebar-button
+				Icon("paint-brush")
+				span.sidebar-text Theme
+
+		SidebarButton("Help", "/thread/I3MMiOtzR", "question-circle")
+
+		if user != nil
+			SidebarButtonNoAJAX("Logout", "/logout", "sign-out")
+		else
+			SidebarButton("Login", "/login", "sign-in")
+
+		.sidebar-social-media
+			SocialMediaButtons
+
+component SidebarButton(name string, target string, icon string)
+	a.sidebar-link(href=target, aria-label=name, data-bubble="true")
+		.sidebar-button
+			Icon(icon)
+			span.sidebar-text= name
+
+component SidebarButtonNoAJAX(name string, target string, icon string)
+	a.sidebar-link(href=target, aria-label=name, data-bubble="true", data-ajax="false")
+		.sidebar-button
+			Icon(icon)
+			span.sidebar-text= name

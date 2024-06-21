@@ -1,0 +1,22 @@
+.profile-watching-list
+	horizontal-wrap
+	justify-content center
+
+	// CSS grid variant:
+	// display grid
+	// grid-gap 0.5rem
+	// grid-template-columns repeat(auto-fill, 55px)
+	// justify-content center
+
+.profile-watching-list-item
+	anime-mini-item
+
+	[data-added="false"]
+		transition filter transition-speed ease
+		filter saturate(0)
+
+		:hover
+			filter saturate(1)
+
+.profile-watching-list-item-image
+	anime-mini-item-image

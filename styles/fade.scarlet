@@ -1,0 +1,6 @@
+.fade
+	opacity 1
+	transition opacity fade-speed ease
+
+.fade-out
+	opacity 0 !important

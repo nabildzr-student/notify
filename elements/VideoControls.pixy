@@ -1,0 +1,19 @@
+component VideoControls(containerID string, duration time.Duration)
+	.video-controls
+		button.video-control.video-control-play.action(data-action="togglePlayVideo", data-trigger="click", data-media-id=containerID, aria-label="Play")
+			RawIcon("play")
+		
+		button.video-control.video-control-pause.action(data-action="togglePlayVideo", data-trigger="click", data-media-id=containerID, aria-label="Pause")
+			RawIcon("pause")
+		
+		.video-progress-clickable
+			.video-progress-container
+				.video-progress
+		
+		.video-time= fmt.Sprintf("%d:%02d", int(duration.Minutes()), int(duration.Seconds()) % 60)
+
+		//- button.video-control.action(data-action="like", data-trigger="click")
+		//- 	RawIcon("heart-o")
+		
+		button.video-control.video-control-fullscreen.action(data-action="toggleFullscreen", data-trigger="click", data-id=containerID, aria-label="Fullscreen")
+			RawIcon("fullscreen")

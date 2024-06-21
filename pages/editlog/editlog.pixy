@@ -1,0 +1,92 @@
+component EditLogPage(entries []*arn.EditLogEntry, nextIndex int, viewUser *arn.User, user *arn.User)
+	if viewUser != nil
+		h1.mountable= "Editor log: " + viewUser.Nick
+	else
+		h1.mountable Editor log
+	
+	if viewUser == nil
+		.corner-buttons
+			a.button(href="/log", title="Full list")
+				RawIcon("list")
+			
+			a.button(href="/log/compact", title="Compact list")
+				RawIcon("list-alt")
+	
+	EditLog(entries, user)
+
+	if nextIndex != -1
+		.buttons
+			LoadMore(nextIndex)
+
+component EditLog(entries []*arn.EditLogEntry, user *arn.User)
+	#load-more-target.edit-log
+		.edit-log-header.mountable
+			.edit-log-icon Action
+			.edit-log-user User
+			.edit-log-object Object
+			.edit-log-key Key
+			.edit-log-value Old
+			.edit-log-value New
+			.edit-log-date Date
+		
+		EditLogScrollable(entries, user)
+
+component EditLogScrollable(entries []*arn.EditLogEntry, user *arn.User)
+	each entry in entries
+		.edit-log-entry.mountable
+			.edit-log-icon.tip(aria-label=entry.ActionHumanReadable())
+				if entry.Action == "create"
+					.edit-log-create
+						RawIcon("plus")
+				else if entry.Action == "delete"
+					.edit-log-delete
+						RawIcon("minus")
+				else if entry.Action == "edit" || entry.Action == "arrayAppend" || entry.Action == "arrayRemove"
+					.edit-log-change
+						RawIcon("pencil")
+					
+					if entry.Action == "arrayAppend"
+						.edit-log-sub-icon.edit-log-add
+							RawIcon("plus-square")
+					else if entry.Action == "arrayRemove"
+						.edit-log-sub-icon.edit-log-remove
+							RawIcon("minus-square")
+					else
+						if entry.OldValue == "" && entry.NewValue != ""
+							.edit-log-sub-icon.edit-log-add
+								RawIcon("plus-circle")
+						else if entry.OldValue != "" && entry.NewValue == ""
+							.edit-log-sub-icon.edit-log-remove
+								RawIcon("minus-circle")
+
+			.edit-log-user
+				a.edit-log-user-link.tip(href=entry.User().Link(), aria-label=entry.User().Nick)
+					AvatarNoLink(entry.User())
+			
+			.edit-log-object
+				if arn.GetObjectTitle(entry.ObjectType, entry.ObjectID) == ""
+					.edit-log-empty empty
+				else if strings.HasPrefix(arn.GetObjectTitle(entry.ObjectType, entry.ObjectID), "<not found:")
+					span.clip-long-text= arn.GetObjectTitle(entry.ObjectType, entry.ObjectID)
+				else
+					a.clip-long-text(href=arn.GetObjectLink(entry.ObjectType, entry.ObjectID), target="_blank")= arn.GetObjectTitle(entry.ObjectType, entry.ObjectID)
+			
+			.edit-log-key
+				span= entry.ObjectType
+
+				if entry.Key != ""
+					span.clip-long-text= "." + entry.Key
+			
+			.edit-log-value(title=entry.OldValue)
+				if entry.OldValue == ""
+					.edit-log-empty empty
+				else
+					span.clip-long-text= entry.OldValue
+			
+			.edit-log-value(title=entry.NewValue)
+				if entry.NewValue == ""
+					.edit-log-empty empty
+				else
+					span.clip-long-text= entry.NewValue
+
+			time.edit-log-date.utc-date(datetime=entry.Created)

@@ -1,0 +1,40 @@
+component SoundTracks(tracks []*arn.SoundTrack, nextIndex int, tag string, user *arn.User)
+	h1.page-title Soundtracks
+
+	SoundTracksTabs(tag)
+
+	.corner-buttons
+		if user != nil
+			if user.DraftIndex().SoundTrackID == ""
+				button.action(data-action="newObject", data-trigger="click", data-type="soundtrack")
+					Icon("plus")
+					span Add soundtrack
+			else
+				a.button(href="/soundtrack/" + user.DraftIndex().SoundTrackID + "/edit")
+					Icon("pencil")
+					span Edit draft
+
+	#load-more-target.soundtracks
+		SoundTracksScrollable(tracks, user)
+	
+	if nextIndex != -1
+		.buttons
+			LoadMore(nextIndex)
+
+component SoundTracksScrollable(tracks []*arn.SoundTrack, user *arn.User)
+	each track in tracks
+		SoundTrack(track, user)
+
+component SoundTracksTabs(tag string)
+	.tab-groups
+		.tabs
+			Tab("Latest", "music", "/soundtracks")
+			Tab("Best", "heart", "/soundtracks/best")
+		
+		.tabs
+			Tab("opening", "tag", "/soundtracks/tag/opening")
+			Tab("ending", "tag", "/soundtracks/tag/ending")
+
+		if tag != "" && tag != "opening" && tag != "ending"
+			.tabs
+				Tab(tag, "tag", "/soundtracks/tag/" + tag)

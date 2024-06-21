@@ -1,0 +1,39 @@
+component APIType(t reflect.Type, examples []string, fields []*utils.APIField, embedded []string)
+	.api-docs
+		h1.mountable= t.Name()
+
+		h2.mountable Examples
+
+		if len(examples) == 0
+			p.no-data.mountable No examples available yet.
+		else
+			.buttons.mountable
+				each example in examples
+					a.button(href=example, target="_blank")
+						Icon("external-link")
+						span= strings.TrimPrefix(example, "/api")
+
+		h2.mountable Fields
+
+		table
+			thead
+				tr.mountable
+					th Field
+					th Type
+			tbody
+				each field in fields
+					tr.api-field.mountable
+						td.api-field-json(title=field.Name + " (Go)")= field.JSON
+						td.api-field-type= field.Type
+		
+		if len(embedded) > 0
+			h2.mountable Embeds
+
+			ul
+				each embed in embedded
+					li.mountable= embed
+
+		.corner-buttons
+			a.button(href="/api")
+				Icon("code")
+				span Overview

@@ -1,0 +1,75 @@
+component SettingsExtras(user *arn.User)
+	SettingsTabs
+
+	h1.page-title Extra settings
+
+	.settings
+		//- Apps
+		.widget.mountable
+			h3.widget-title
+				Icon("puzzle-piece")
+				span Apps
+			
+			.widget-section
+				label Chrome Extension:
+				a.button(href="https://chrome.google.com/webstore/detail/anime-notifier/hajchfikckiofgilinkpifobdbiajfch", target="_blank", rel="noopener")
+					Icon("chrome")
+					span Get the Chrome Extension
+
+			.widget-section
+				label Firefox Extension:
+				a.button(href="https://addons.mozilla.org/en-US/firefox/addon/anime-notifier/", target="_blank", rel="noopener")
+					Icon("firefox")
+					span Get the Firefox Extension
+
+			.widget-section
+				label Android Web App:
+				a.button(href="https://www.youtube.com/watch?v=opyt4cw0ep8", target="_blank", rel="noopener")
+					Icon("android")
+					span Get the Android Web App
+
+			.widget-section
+				label Desktop Web App:
+				button.action(data-action="installApp", data-trigger="click")
+					Icon("desktop")
+					span Get the Desktop Web App
+
+		//- Developer
+		.widget.mountable(data-api="/api/settings/" + user.ID)
+			h3.widget-title
+				Icon("code")
+				span Developer
+			
+			.widget-section
+				label API:
+				a.button(href="/api")
+					Icon("code")
+					span API
+			
+			.widget-section
+				label GitHub:
+				a.button(href="https://github.com/animenotifier/notify.moe")
+					Icon("github")
+					span GitHub
+		
+		//- PRO
+		.widget.mountable(data-api="/api/settings/" + user.ID)
+			h3.widget-title
+				Icon("star")
+				span PRO
+			
+			if user.IsPro()
+				.widget-section
+					label
+						span Your PRO account expires in 
+						time.utc-date(datetime=user.ProExpires)
+						span .
+					a.button(href="/shop")
+						Icon("star")
+						span Extend PRO account duration
+			else
+				.widget-section
+					label Would you like to make this website more awesome?
+					a.button(href="/support")
+						Icon("star")
+						span Go PRO

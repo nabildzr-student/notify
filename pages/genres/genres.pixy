@@ -1,0 +1,12 @@
+component Genres(genres []string, genreToAnime map[string]*arn.Anime, user *arn.User)
+	h1 Genres
+
+	.genres
+		each genre in genres
+			a.genre.genre-squared.mountable(href="/genre/" + strings.ToLower(genre))
+				.genre-text.front
+					.genre-icon
+						RawIcon(arn.GetGenreIcon(genre))
+					span.genre-text-only= genre
+
+				img.genre-image.back(src=genreToAnime[genre].ImageLink("medium"), alt=genreToAnime[genre].Title.ByUser(user), title=genre)

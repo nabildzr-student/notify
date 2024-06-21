@@ -1,0 +1,174 @@
+component SearchResults(term string, users []*arn.User, animes []*arn.Anime, posts []*arn.Post, threads []*arn.Thread, tracks []*arn.SoundTrack, characters []*arn.Character, amvs []*arn.AMV, companies []*arn.Company, quotes []*arn.Quote, user *arn.User)
+	h1.page-title= "Search: " + term
+
+	.search
+		.widget(class=utils.SearchClass(animes))
+			h3.widget-title
+				Icon("tv")
+				span Anime
+
+			#anime-search-results
+				AnimeSearchResults(animes, user)
+
+		.widget(class=utils.SearchClass(characters))
+			h3.widget-title
+				Icon("user")
+				span Characters
+
+			#character-search-results
+				CharacterSearchResults(characters, user)
+
+		.widget(class=utils.SearchClass(posts))
+			h3.widget-title
+				Icon("comment")
+				span Posts
+
+			#posts-search-results
+				PostsSearchResults(posts, user)
+		
+		.widget(class=utils.SearchClass(threads))
+			h3.widget-title
+				Icon("comments")
+				span Threads
+
+			#threads-search-results
+				ThreadsSearchResults(threads, user)
+
+		.widget(class=utils.SearchClass(tracks))
+			h3.widget-title
+				Icon("music")
+				span Soundtracks
+
+			#soundtrack-search-results
+				SoundTrackSearchResults(tracks, user)
+		
+		.widget(class=utils.SearchClass(amvs))
+			h3.widget-title
+				Icon("video-camera")
+				span AMVs
+
+			#amv-search-results
+				AMVSearchResults(amvs, user)
+
+		//- .widget
+		//- 	h3.widget-title
+		//- 		Icon("quote-left")
+		//- 		span Quotes
+
+		//- 	#quote-search-results
+		//- 		QuoteSearchResults(quotes)
+
+		.widget(class=utils.SearchClass(companies))
+			h3.widget-title
+				Icon("building")
+				span Companies
+
+			#company-search-results
+				CompanySearchResults(companies)
+
+		.widget(class=utils.SearchClass(users))
+			h3.widget-title
+				Icon("user")
+				span Users
+
+			#user-search-results
+				UserSearchResults(users)
+
+component AnimeSearchResults(animes []*arn.Anime, user *arn.User)
+	if len(animes) == 0
+		p.no-search-results.mountable No anime found.
+	else
+		.profile-watching-list.anime-search
+			each anime in animes
+				a.profile-watching-list-item.tip.mountable(href=anime.Link(), aria-label=anime.Title.ByUser(user), data-mountable-type="anime", data-added=(user != nil && user.AnimeList().Contains(anime.ID)))
+					img.anime-cover-image.anime-search-result.lazy(data-src=anime.ImageLink("small"), data-webp="true", data-color=anime.AverageColor(), alt=anime.Title.ByUser(user))
+
+component CharacterSearchResults(characters []*arn.Character, user *arn.User)
+	if len(characters) == 0
+		p.no-search-results.mountable No characters found.
+	else
+		.character-search
+			each character in characters
+				.mountable(data-mountable-type="character")
+					CharacterSmall(character, user)
+
+component PostsSearchResults(posts []*arn.Post, user *arn.User)
+	if len(posts) == 0
+		p.no-search-results.mountable No posts found.
+	else
+		.posts-search-results
+			each post in posts
+				.posts-search-result.mountable(data-mountable-type="post")
+					.posts-search-result-header
+						a.posts-search-result-title(href=post.Link(), data-mountable-type="post")= post.Parent().TitleByUser(user)
+						
+						if post.Creator().HasNick()
+							.posts-search-result-author= post.Creator().Nick
+					
+					.posts-search-result-sample= post.Text
+
+component ThreadsSearchResults(threads []*arn.Thread, user *arn.User)
+	if len(threads) == 0
+		p.no-search-results.mountable No threads found.
+	else
+		each thread in threads
+			.posts-search-result.mountable(data-mountable-type="thread")
+				.posts-search-result-header
+					a.posts-search-result-title(href=thread.Link())= thread.Title
+
+					if thread.Creator().HasNick()
+						.posts-search-result-author= thread.Creator().Nick
+				
+				.posts-search-result-sample= thread.Text
+
+component SoundTrackSearchResults(tracks []*arn.SoundTrack, user *arn.User)
+	if len(tracks) == 0
+		p.no-search-results.mountable No soundtracks found.
+	else
+		ul.soundtrack-search
+			each track in tracks
+				li.mountable(data-mountable-type="track")
+					a(href=track.Link())= track.Title.ByUser(user)
+					span.soundtrack-search-anime= " - " + track.MainAnime().Title.Canonical
+
+component AMVSearchResults(amvs []*arn.AMV, user *arn.User)
+	if len(amvs) == 0
+		p.no-search-results.mountable No AMVs found.
+	else
+		ul.amv-search
+			each amv in amvs
+				li.mountable(data-mountable-type="amv")
+					a(href=amv.Link())= amv.Title.ByUser(user)
+
+					if amv.MainAnime() != nil
+						span.amv-search-anime= " - " + amv.MainAnime().Title.Canonical
+					else
+						span.amv-search-anime= fmt.Sprintf(" - %d anime", len(amv.ExtraAnimeIDs))
+
+component CompanySearchResults(companies []*arn.Company)
+	if len(companies) == 0
+		p.no-search-results.mountable No companies found.
+	else
+		ul.company-search
+			each company in companies
+				li.mountable(data-mountable-type="company")
+					a(href=company.Link())= company.Name.English
+
+component QuoteSearchResults(quotes []*arn.Quote)
+	if len(quotes) == 0
+		p.no-search-results.mountable No quotes found.
+	else
+		ul.quote-search
+			each quote in quotes
+				li.mountable(data-mountable-type="quote")
+					a(href=quote.Link())= quote.Text.English
+
+component UserSearchResults(users []*arn.User)
+	if len(users) == 0
+		p.no-search-results.mountable No users found.
+	else
+		.user-avatars.user-search
+			each user in users
+				.mountable(data-mountable-type="user")
+					Avatar(user)
+				

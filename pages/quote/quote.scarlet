@@ -1,0 +1,12 @@
+.quote-full-page
+	vertical
+
+.quote-main-column
+	vertical
+	flex 1
+
+.quote-anime
+	horizontal
+	justify-content center
+	margin-bottom 1rem
+	font-size 0.9rem

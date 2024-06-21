@@ -1,0 +1,40 @@
+component Notifications(notifications []*arn.Notification, viewUser *arn.User, user *arn.User)
+	h1 Notifications
+
+	.corner-buttons
+		if user.ID == viewUser.ID
+			button.action(data-action="markNotificationsAsSeen", data-trigger="click")
+				Icon("check")
+				span Mark all as seen
+
+	.notifications-container
+		.notifications
+			each notification in notifications
+				Notification(notification)
+
+component AllNotifications(notifications []*arn.Notification)
+	h1 All notifications
+
+	.notifications-container
+		.notifications
+			each notification in notifications
+				Notification(notification)
+
+				.notification-user
+					a(href=notification.User().Link())= notification.User().Nick
+
+component Notification(notification *arn.Notification)
+	a.notification(href=notification.Link, data-seen=notification.Seen, data-id=notification.ID)
+		.notification-icon
+			img.lazy(data-src=notification.Icon, alt=notification.Title)
+		
+		.notification-info
+			h3.notification-title= notification.Title
+
+			footer.notification-footer
+				p.notification-text= notification.Message
+				time.notification-date.utc-date(datetime=notification.Created)
+		
+		if notification.Seen != ""
+			.notification-seen
+				RawIcon("check")

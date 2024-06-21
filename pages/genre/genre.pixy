@@ -1,0 +1,19 @@
+component Genre(genre string, animes []*arn.Anime, user *arn.User, userScore float64, userCompleted int, globalScore float64)
+	h1.genre-title(title=fmt.Sprint(len(animes)) + " anime")= strings.Title(genre)
+
+	if user != nil
+		GenreStatistics(user, userScore, userCompleted, globalScore)
+	
+	.corner-buttons-hide-on-mobile
+		if user != nil
+			button.action(data-trigger="click", data-action="toggleHideAddedAnime", title="Hide anime in my collection")
+				RawIcon("eye-slash")
+
+		a.button(href="/genres", title="View genres")
+			RawIcon("clone")
+
+	AnimeGrid(animes, user)
+
+component GenreStatistics(user *arn.User, userScore float64, userCompleted int, globalScore float64)
+	.genre-statistics
+		p= fmt.Sprintf("Your average rating: %." + strconv.Itoa(user.Settings().Format.RatingsPrecision) + "f | Total completed: %d", userScore, userCompleted)

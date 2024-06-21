@@ -1,0 +1,5 @@
+component TabWithCount(label string, count int, icon string, url string)
+	a.tab.action(href=url, data-action="diff", data-trigger="click", aria-label=label, dropzone="move")
+		Icon(icon)
+		span.tab-text= label
+		span.tab-count= count

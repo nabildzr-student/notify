@@ -1,0 +1,121 @@
+component ActivityFeed(entries []arn.Activity, nextIndex int, user *arn.User)
+	h1.page-title Activity
+
+	.tabs
+		Tab("Posts", "comment", "/activity")
+		Tab("Watch", "eye", "/activity/watch")
+
+	if user != nil
+		.corner-buttons(data-api="/api/settings/" + user.ID)
+			if user.Settings().Activity.ShowFollowedOnly
+				button.action(id="Activity.ShowFollowedOnly", data-action="disable", data-trigger="click", data-field="Activity.ShowFollowedOnly", title="Followed only")
+					Icon("toggle-on")
+					span Followed
+			else
+				button.action(id="Activity.ShowFollowedOnly", data-action="enable", data-trigger="click", data-field="Activity.ShowFollowedOnly", title="Followed only")
+					Icon("toggle-off")
+					span Followed
+
+	if len(entries) == 0
+		p.no-data.mountable No activity here.
+	else
+		#load-more-target.activities
+			ActivitiesScrollable(entries, user)
+	
+	if nextIndex != -1
+		.buttons
+			LoadMore(nextIndex)
+	
+	#load-new-activities(data-count="0")
+		.buttons
+			button.page-main-action.action(data-action="reloadContent", data-trigger="click")
+				Icon("refresh")
+				span#load-new-activities-text 0 new activities
+
+component ActivitiesScrollable(entries []arn.Activity, user *arn.User)
+	each entry in entries
+		Activity(entry, user)
+
+component Activity(activity arn.Activity, user *arn.User)
+	if activity.TypeName() == "ActivityCreate"
+		ActivityCreate(activity.(*arn.ActivityCreate), user)
+	else if activity.TypeName() == "ActivityConsumeAnime"
+		ActivityConsumeAnime(activity.(*arn.ActivityConsumeAnime), user)
+
+	//- .activity.post-parent.mountable(id=fmt.Sprintf("activity-%s", activity.GetID()), data-api=utils.ActivityAPILink(activity))
+	//- 	.post-author
+	//- 		Avatar(activity.Creator())
+	//- 	.post-content
+	//- 		.post-header
+	//- 			.post-header-info
+	//- 				a(href=activity.Creator().Link())= activity.Creator().Nick
+
+	//- 				if activity.TypeName() == "ActivityCreate"
+	//- 					ActivityCreateMeta(activity.(*arn.ActivityCreate), user)
+				
+	//- 			if user != nil
+	//- 				//- button.post-action.tip.action(data-action="like", data-trigger="click", aria-label="Like")
+	//- 				//- 	Icon("heart")
+	//- 				//- 	if activity.TypeName() == "ActivityCreate"
+	//- 				//- 		span= activity.(*arn.ActivityCreate).Object().CountLikes()
+	//- 				//- 	else
+	//- 				//- 		span= len(activity.(*arn.ActivityConsumeAnime).Likes)
+					
+	//- 				if user.ID == activity.GetCreatedBy() && activity.TypeName() == "ActivityConsumeAnime"
+	//- 					button.post-action.tip.action(data-action="deleteObject", data-trigger="click", aria-label="Delete", data-return-path="/activity", data-confirm-type="activity")
+	//- 						RawIcon("trash")
+				
+	//- 			.post-date.utc-date(data-date=activity.GetCreated())
+
+	//- 		if activity.TypeName() == "ActivityCreate"
+	//- 			ActivityCreateText(activity.(*arn.ActivityCreate), user)
+	//- 		else if activity.TypeName() == "ActivityConsumeAnime"
+	//- 			ActivityConsumeAnimeText(activity.(*arn.ActivityConsumeAnime), user)
+
+component ActivityConsumeAnime(activity *arn.ActivityConsumeAnime, user *arn.User)
+	.activity.mountable.post-parent(id=fmt.Sprintf("activity-%s", activity.GetID()), data-type="consume-anime")
+		.post-author
+			Avatar(activity.Creator())
+		
+		.post-box
+			.post-header
+				.post-header-info
+					ActivityConsumeAnimeTitle(activity, user)
+				
+				time.post-date.utc-date(datetime=activity.GetCreated())
+			
+			.post-content
+				ActivityConsumeAnimeText(activity, user)
+
+component ActivityConsumeAnimeTitle(activity *arn.ActivityConsumeAnime, user *arn.User)
+	a(href=activity.Anime().Link())= activity.Anime().TitleByUser(user)
+
+component ActivityConsumeAnimeText(activity *arn.ActivityConsumeAnime, user *arn.User)
+	if activity.ToEpisode > activity.FromEpisode
+		span= fmt.Sprintf("%s watched episodes %d - %d.", activity.Creator().Nick, activity.FromEpisode, activity.ToEpisode)
+	else
+		span= fmt.Sprintf("%s watched episode %d.", activity.Creator().Nick, activity.ToEpisode)
+
+component ActivityCreate(activity *arn.ActivityCreate, user *arn.User)
+	Postable(activity.Postable(), user, false, true, "")
+
+component ActivityCreateMeta(activity *arn.ActivityCreate, user *arn.User)
+	if activity.ObjectType == "Post"
+		if activity.Postable().GetParentType() != "User"
+			span  in 
+			a(href=activity.Postable().Parent().Link())= activity.Postable().Parent().TitleByUser(user)
+		else if activity.Postable().GetParentID() != activity.CreatedBy
+			span  to 
+			a(href=activity.Postable().Parent().Link())= activity.Postable().Parent().TitleByUser(user)
+	else if activity.ObjectType == "Thread"
+		span  in 
+		a(href=activity.Postable().Link())= activity.Postable().TitleByUser(user)
+	else if activity.ObjectType == "AMV" || activity.ObjectType == "SoundTrack" || activity.ObjectType == "Quote"
+		span  in 
+		a(href=activity.Object().(arn.PostParent).Link())= activity.Object().(arn.PostParent).TitleByUser(user)
+
+component ActivityCreateText(activity *arn.ActivityCreate, user *arn.User)
+	if activity.ObjectType == "Post" || activity.ObjectType == "Thread"
+		div!= activity.Postable().HTML()
+	else
+		em.activity-text-create= "new " + strings.ToLower(activity.ObjectType)

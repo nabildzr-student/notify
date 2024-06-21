@@ -1,0 +1,27 @@
+component PopularCompanies(companies []*arn.Company, companyToAnime map[string][]*arn.Anime, nextIndex int, user *arn.User)
+	CompaniesTabs(user)
+
+	h1.page-title Popular companies
+
+	ol#load-more-target.popular-companies
+		PopularCompaniesScrollable(companies, companyToAnime, user)
+
+	if nextIndex != -1
+		.buttons
+			LoadMore(nextIndex)
+
+component PopularCompaniesScrollable(companies []*arn.Company, companyToAnime map[string][]*arn.Anime, user *arn.User)
+	each company in companies
+		li.popular-company.mountable
+			a.popular-company-header(href=company.Link())
+				Icon("building")
+				span.popular-company-name= company.Name.English
+			
+			.popular-company-body.popular-company-description!= markdown.Render(company.Description)
+			
+			footer.popular-company-footer
+				.company-anime
+					each anime in utils.MaxAnime(companyToAnime[company.ID], 12)
+						CompanyAnimeNoTip(anime, user)
+			
+			//- span= " (" + strconv.Itoa(popularity[company.ID]) + ")"

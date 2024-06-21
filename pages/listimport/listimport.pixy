@@ -1,0 +1,37 @@
+component ImportLists(user *arn.User)
+	if user.Accounts.AniList.Nick == "" && user.Accounts.Kitsu.Nick == "" && user.Accounts.MyAnimeList.Nick == ""
+		p.settings-info-text Import your list once you enter your username!
+
+	if user.Accounts.AniList.Nick != ""
+		label AniList:
+
+		.widget-section
+			a.button(href="/import/anilist/animelist")
+				Icon("download")
+				span Import AniList
+
+	if user.Accounts.Kitsu.Nick != ""
+		label Kitsu:
+		.widget-section
+			a.button(href="/import/kitsu/animelist")
+				Icon("download")
+				span Import Kitsu
+	
+	if user.Accounts.MyAnimeList.Nick != ""
+		label MyAnimeList:
+		.widget-section
+			a.button(href="/import/myanimelist/animelist")
+				Icon("download")
+				span Import MyAnimeList
+
+component ImportFinished(user *arn.User)
+	h1.mountable Import finished
+
+	.buttons
+		a.button.mountable(href=user.Link())
+			Icon("user")
+			span Profile
+		
+		a.button.mountable(href=user.Link() + "/animelist/watching")
+			Icon("list")
+			span Anime list

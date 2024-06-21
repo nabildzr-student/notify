@@ -1,0 +1,14 @@
+const remove-margin = 1.1rem
+
+.embedded
+	// Put navigation to the bottom of the screen
+	flex-direction column-reverse !important
+
+	.anime-list
+		margin-left calc(remove-margin * -1)
+		margin-top calc(remove-margin * -1)
+		width calc(100% + remove-margin * 2)
+
+	.anime-list-item-image,
+	.anime-list-item-image-container
+		width 27px

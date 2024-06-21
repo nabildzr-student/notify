@@ -1,0 +1,43 @@
+component QuotePage(quote *arn.Quote, character *arn.Character, user *arn.User)
+	QuoteTabs(quote, user)
+
+	.quote-full-page
+		.quote-main-column
+			QuoteMainColumn(quote, user)
+
+component QuoteMainColumn(quote *arn.Quote, user *arn.User)
+	.widget-form.mountable
+		QuoteContent(quote, user)
+
+		if quote.Anime() != nil
+			p.quote-anime
+				a(href=quote.Anime().Link())= quote.Anime().Title.ByUser(user)
+
+		.widget.mountable
+			h3.widget-title Comments
+			Comments(quote, user)
+
+	footer.footer.mountable
+		if quote.EditedBy != ""
+			span Edited 
+			time.utc-date(datetime=quote.Edited)
+			span  by 
+			a(href=quote.Editor().Link())= quote.Editor().Nick
+		else
+			span Posted 
+			time.utc-date(datetime=quote.Created)
+			span  by 
+			a(href=quote.Creator().Link())= quote.Creator().Nick
+			span .
+
+component QuoteTabs(quote *arn.Quote, user *arn.User)
+	.tabs
+		LikeTab(strconv.Itoa(len(quote.Likes)), "heart", "quote", quote, user)
+		Tab("Quote", "quote-left", quote.Link())
+		if user != nil
+			Tab("Edit", "pencil", quote.Link() + "/edit")
+		Tab("History", "history", quote.Link() + "/history")
+
+component QuoteAnime(anime *arn.Anime, user *arn.User)
+	a.quote-anime-list-item(href=anime.Link(), title=anime.Title.ByUser(user))
+		img.quote-anime-list-item-image.lazy(data-src=anime.ImageLink("small"), data-webp="true", data-color=anime.AverageColor(), alt=anime.Title.ByUser(user))

@@ -1,0 +1,57 @@
+.notifications-container
+	horizontal
+	justify-content center
+
+.notifications
+	vertical
+	width 100%
+	max-width 800px
+
+.notification
+	horizontal
+	ui-element
+	padding 1rem
+	margin-bottom 0.5rem
+	position relative
+	opacity 0.35
+
+.notification-user
+	text-align right
+	margin-bottom 0.5rem
+	font-size 0.9rem
+
+.notification[data-seen=""]
+	opacity 1.0
+
+.notification-icon
+	margin-right 1rem
+	width 64px
+	height 64px
+
+	img
+		width 64px
+		height 64px
+		object-fit cover
+
+.notification-info
+	vertical
+	flex 1
+	color text-color
+
+.notification-footer
+	horizontal
+
+.notification-text
+	flex 1
+	margin 0
+	opacity 0.9
+
+.notification-date
+	opacity 0.5
+	font-size 0.9em
+	align-self flex-end
+
+.notification-seen
+	position absolute
+	top 1rem
+	right 1rem

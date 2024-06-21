@@ -1,0 +1,14 @@
+[Unit]
+Description=Image Server
+After=animenotifier.service
+
+[Service]
+Type=simple
+User=MAKEFILE_USER
+ExecStart=MAKEFILE_GOBIN/imageserver
+WorkingDirectory=MAKEFILE_PWD
+Restart=on-failure
+Nice=2
+
+[Install]
+WantedBy=multi-user.target

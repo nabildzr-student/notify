@@ -1,0 +1,36 @@
+component AnimeListScrollable(animeListItems []*arn.AnimeListItem, viewUser *arn.User, user *arn.User)
+	each item in animeListItems
+		.anime-list-item.mountable(title=item.Notes, data-api="/api/animelist/" + viewUser.ID + "/field/Items[AnimeID=\"" + item.AnimeID + "\"]")
+			.anime-list-item-image-container(draggable="true")
+				a.anime-list-item-image-link(href=item.Anime().Link())
+					img.anime-list-item-image.lazy(data-src=item.Anime().ImageLink("small"), data-webp="true", data-color=item.Anime().AverageColor(), alt=item.Anime().Title.ByUser(user))
+
+			.anime-list-item-name(draggable="true")
+				a(href=item.Link(viewUser.Nick))= item.Anime().Title.ByUser(user)
+
+			//- .anime-list-item-actions
+			//- 	if user != nil && item.Status != arn.AnimeListStatusCompleted
+			//- 		if item.Anime().EpisodeByNumber(item.Episodes + 1) != nil
+			//- 			for _, link := range item.Anime().EpisodeByNumber(item.Episodes + 1).Links
+			//- 				a.tip(href=link, aria-label="Watch episode " + fmt.Sprint(item.Episodes + 1), target="_blank", rel="noopener")
+			//- 					RawIcon("eye")
+
+			.anime-list-item-airing-date
+				if item.Status != arn.AnimeListStatusCompleted && item.Anime().UpcomingEpisode() != nil
+					time.utc-airing-date(datetime=item.Anime().UpcomingEpisode().Episode.AiringDate.Start, data-end-date=item.Anime().UpcomingEpisode().Episode.AiringDate.End, data-episode-number=item.Anime().UpcomingEpisode().Episode.Number)
+
+			if item.Status != arn.AnimeListStatusCompleted
+				.anime-list-item-episodes
+					.anime-list-item-episodes-watched
+						.action(contenteditable=arn.SameUser(user, viewUser), data-field="Episodes", data-type="number", data-trigger="focusout", data-action="save")= item.Episodes
+						
+						if item.Status == arn.AnimeListStatusWatching && user != nil && user.ID == viewUser.ID
+							.plus-episode.action(data-action="increaseEpisode", data-trigger="click") +
+						else
+							.plus-episode-dummy +
+
+					.anime-list-item-episodes-separator /
+					.anime-list-item-episodes-max= item.Anime().EpisodeCountString()
+
+			.anime-list-item-rating-container
+				.anime-list-item-rating.action.tip(contenteditable=arn.SameUser(user, viewUser), data-field="Rating.Overall", data-type="number", data-trigger="focusout", data-action="save", aria-label="O: " + utils.FormatRating(item.Rating.Overall) + " | S: " + utils.FormatRating(item.Rating.Story) + " | V: " + utils.FormatRating(item.Rating.Visuals) + " | M: " + utils.FormatRating(item.Rating.Soundtrack))= utils.FormatRating(item.Rating.Overall)

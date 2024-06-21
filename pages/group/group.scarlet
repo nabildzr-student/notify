@@ -1,0 +1,57 @@
+.group-view
+	vertical
+	width 100%
+	max-width group-post-width
+	margin 0 auto
+
+.group-feed
+	// ...
+
+.group-avatar-container
+	display flex
+	justify-content center
+
+.group-avatar
+	width 280px
+	height 280px
+	border-radius ui-element-border-radius
+
+	// For image upload previews,
+	// cover mode should be activated.
+	object-fit cover
+
+.group-header
+	vertical
+	cover-image-container
+	align-items center
+
+.group-header-intro
+	vertical
+	align-items center
+	margin-top content-padding
+
+> 900px
+	.group-header
+		horizontal
+		align-items stretch
+
+	.group-header-intro
+		margin-top 0
+		margin-left calc(content-padding * 2)
+		align-items flex-start
+
+	.group-page-name
+		margin-top 0
+
+	.group-page-name,
+	.group-page-tagline
+		text-align left
+
+.group-page-name
+	margin 0
+
+.group-page-tagline
+	text-align center
+
+	&.mounted
+		opacity 0.7 !important

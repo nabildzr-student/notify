@@ -1,0 +1,148 @@
+.anime
+	vertical
+	width 100%
+	max-width 1700px
+	margin 0 auto
+
+.anime-main-column
+	vertical
+	flex 1
+
+.anime-side-column
+	sidebar
+
+> 1250px
+	.anime
+		horizontal
+
+	.anime-side-column
+		sidebar-medium
+
+> 1400px
+	.anime-side-column
+		sidebar-big
+
+.anime-header
+	vertical
+
+.anime-title
+	text-align center
+	margin-bottom 0.5rem
+
+> 800px
+	.anime-header
+		horizontal
+		page-header
+
+	.anime-title
+		text-align left
+
+	.anime-alternative-title
+		text-align left
+
+	.anime-summary-footer-container
+		vertical
+		flex 1
+		justify-content flex-end
+		align-items flex-end
+
+	.anime-summary-footer
+		width 100%
+		display flex
+		justify-content space-between
+		align-items center
+
+		button,
+		.button
+			margin 0.25rem
+
+.anime-info-table
+	vertical
+	margin 0
+
+	tr
+		horizontal
+
+.anime-info-key
+	flex 1
+
+.anime-info-value
+	text-align right
+
+.anime-section
+	margin-top 1rem
+
+	:first-child
+		margin-top 0 !important
+
+.anime-section-name
+	font-weight bold
+
+.anime-image-container
+	vertical
+	justify-content flex-start
+	align-items center
+
+.anime-cover-image
+	width anime-image-large-width
+	height anime-image-large-height
+	border-radius ui-element-border-radius
+
+	default-transition
+	object-fit cover
+
+	saturate-up
+	shadow-up
+
+.anime-summary
+	// ...
+
+.anime-info
+	vertical
+	flex 1
+
+.space
+	width content-padding
+	height content-padding
+
+.anime-alternative-title
+	font-size 0.9em
+	margin-top 0
+	margin-bottom 0.5rem
+	text-align center
+	font-weight normal
+	line-height content-line-height
+
+	.japanese
+		color anime-alternative-title-color !important
+
+.anime-actions
+	horizontal
+	justify-content center
+
+.anime-rating
+	// ...
+
+.anime-friends
+	.user-avatars
+		justify-content flex-start
+
+.relations
+	horizontal-wrap
+
+.relation
+	vertical
+	align-items center
+	padding 0.5rem
+
+.relation-type
+	font-size 0.7rem
+	margin-top 0.1rem
+
+.relation-image
+	width 100px
+	height 141px
+	border-radius ui-element-border-radius
+	object-fit cover
+	default-transition
+	shadow-up

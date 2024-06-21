@@ -1,0 +1,33 @@
+.feature-cards
+	feature-cards
+
+.feature-card
+	feature-card
+
+.feature-card-icon,
+.feature-card-text
+	feature-card-component
+
+.feature-card-icon
+	font-size 3rem
+	background feature-card-color
+	color feature-card-icon-color
+
+.feature-card-text
+	vertical
+	color text-color
+
+.feature-cards-alternative-color
+	.feature-card-icon
+		background feature-card-alternative-color
+
+.support-button-container
+	margin content-padding 0
+
+.support-button
+	font-size 2rem
+	padding 1rem 2rem
+	height auto
+
+.support-footer
+	margin-bottom content-padding

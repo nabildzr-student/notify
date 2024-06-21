@@ -1,0 +1,61 @@
+const popular-company-height = 246px
+
+.popular-companies
+	horizontal-wrap
+	justify-content space-evenly
+
+.popular-company
+	vertical
+	width 100%
+	margin 0
+	margin-bottom content-padding-half
+	padding 0.5rem 0.75rem
+	overflow hidden
+	ui-element
+	box-shadow shadow-light
+
+.popular-company-header
+	margin-bottom 0.5rem
+
+.popular-company-body
+	display none
+
+.popular-company-footer
+	.company-anime
+		flex-flow row
+		overflow hidden
+
+.popular-company-description
+	clip-long-text
+	margin-top 0.4rem
+
+	p
+		display inline
+
+.popular-company-name
+	clip-long-text
+
+> 800px
+	.popular-company
+		height popular-company-height
+		max-height popular-company-height
+		padding 0.75rem 1rem
+		margin content-padding-half
+
+	.popular-company-body
+		display block
+		flex 1.0
+
+	.popular-company-header
+		font-size 1.2rem
+
+	.popular-company-description
+		white-space normal
+
+> 1350px
+	.popular-company
+		max-width calc(50% - content-padding * 2)
+
+> 1880px
+	.popular-company
+		max-width 777px

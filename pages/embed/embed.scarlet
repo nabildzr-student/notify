@@ -1,0 +1,17 @@
+.extension-navigation
+	display none
+
+> 780px
+	.extension-navigation
+		horizontal
+		position fixed
+		bottom 0
+		left 0
+		padding 1.2rem
+		width 100%
+		z-index 2
+		pointer-events none
+
+> 790px
+	.extension-navigation
+		display none

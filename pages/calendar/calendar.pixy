@@ -1,0 +1,40 @@
+component Calendar(days []*utils.CalendarDay, user *arn.User)
+	h1.mountable Calendar
+
+	.corner-buttons
+		if user != nil
+			button.action(data-trigger="click", data-action="calendarShowAddedAnimeOnly", data-api="/api/settings/" + user.ID, title="Show anime in my collection")
+				RawIcon("eye-slash")
+
+	if user != nil
+		#calendar(data-show-added-anime-only=user.Settings().Calendar.ShowAddedAnimeOnly)
+			CalendarWeek(days, user)
+	else
+		#calendar
+			CalendarWeek(days, user)
+
+component CalendarWeek(days []*utils.CalendarDay, user *arn.User)
+	.week
+		each day in days
+			div(class=day.Class)
+				h3.weekday-name.mountable(data-mountable-type=day.Name)= day.Name
+				if user == nil
+					.calendar-entries
+						each entry in day.Entries
+							CalendarEntry(day, entry, user)
+				else
+					.calendar-entries
+						each entry in day.Entries
+							CalendarEntry(day, entry, user)
+
+component CalendarEntry(day *utils.CalendarDay, entry *utils.CalendarEntry, user *arn.User)
+	a.calendar-entry.mountable(href=entry.Anime.Link(), data-mountable-type=day.Name, data-added=entry.Added)
+		CalendarView(day, entry, user)
+
+component CalendarView(day *utils.CalendarDay, entry *utils.CalendarEntry, user *arn.User)
+	img.calendar-entry-image.lazy(data-src=entry.Anime.ImageLink("small"), data-webp="true", data-color=entry.Anime.AverageColor(), alt=entry.Anime.Title.ByUser(user))
+		.calendar-entry-info
+			.calendar-entry-title= entry.Anime.Title.ByUser(user)
+			.calendar-entry-time-and-episode
+				time.calendar-entry-time.utc-date-absolute(datetime=entry.Episode.AiringDate.Start)
+				.calendar-entry-episode= "Ep: " + strconv.Itoa(entry.Episode.Number)

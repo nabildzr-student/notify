@@ -1,0 +1,39 @@
+mixin table-root
+	width 100%
+	max-width table-width-normal
+	margin 0 auto
+
+mixin table-row
+	border-bottom-width 1px
+	border-bottom-style solid
+	border-bottom-color rgba(0, 0, 0, 0.05)
+	background transparent
+
+	:hover
+		background table-row-hover-background
+
+	:last-child
+		border none
+
+mixin table-cell
+	padding 0.5rem 1rem
+
+table
+	table-root
+
+tr
+	table-row
+
+td
+	table-cell
+
+th
+	font-size 1.2em
+	text-align left
+	padding 0.5rem 1rem
+	font-weight bold
+
+thead
+	tr
+		:hover
+			background-color transparent

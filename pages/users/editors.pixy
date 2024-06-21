@@ -1,0 +1,10 @@
+component EditorRankingList(users []*arn.User, idToScore map[string]int, url string)
+	h1.page-title Editor ranking list
+	UsersTabs(url)
+
+	.user-cards
+		each user in users
+			UserCard(user, fmt.Sprintf("%s points", humanize.Comma(int64(idToScore[user.ID]))))
+	
+	footer.footer.mountable
+		p Score is generated from new data submissions and data fixes.

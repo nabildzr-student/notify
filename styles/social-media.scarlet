@@ -1,0 +1,18 @@
+.sidebar-social-media
+	horizontal
+	justify-content space-around
+	padding 0.6rem 0
+	border-top 1px solid rgba(0, 0, 0, 0.1)
+
+.social-media-button
+	font-size 1.3rem
+	opacity 0.4
+	color text-color
+
+	:hover
+		transform scale(1.1)
+		opacity 1
+
+svg-icon
+	[name="discord"]
+		transform scale(1.1)

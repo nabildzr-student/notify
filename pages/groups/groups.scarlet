@@ -1,0 +1,46 @@
+const group-padding-y = 0.75rem
+const group-padding-x = 0.75rem
+
+.groups
+	display grid
+	grid-gap content-padding-half
+	grid-template-columns repeat(auto-fit, 100%)
+
+> 600px
+	.groups
+		grid-template-columns repeat(auto-fit, 520px)
+		justify-content center
+
+.group
+	horizontal
+	ui-element
+	position relative
+	padding group-padding-y group-padding-x
+	color text-color
+
+	:hover
+		color text-color
+		border 1px solid input-focus-border-color
+		// TODO: Replace with alpha(main-color, 20%) function
+		box-shadow 0 0 6px rgba(248, 165, 130, 0.2)
+
+.group-info
+	vertical
+	overflow hidden
+
+.group-name
+	clip-long-text
+
+.group-tagline
+	opacity 0.6
+	clip-long-text
+
+.group-member-count
+	horizontal
+	align-items center
+	position absolute
+	top 0.5rem
+	right 1rem
+	text-align right
+	font-size 0.8rem
+	opacity 0.5

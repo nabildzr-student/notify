@@ -1,0 +1,42 @@
+.thread
+	width 100%
+	max-width forum-thread-width
+	margin 0 auto
+
+.posts
+	vertical
+	width 100%
+
+.post
+	vertical
+
+.post-content
+	[data-highlight="true"]
+		border 2px solid post-highlight-color
+
+.post-parent
+	vertical
+	margin-bottom 1.75rem
+
+	.post-author
+		margin-bottom 0.25rem
+
+.replies
+	margin-left content-padding
+
+// On mobile, don't indent the first level
+< 600px
+	.posts
+		> .post
+			> .replies
+				margin-left 0
+
+> 600px
+	.post-parent
+		margin-bottom 0.75rem
+
+		.post-author
+			margin-bottom 0
+
+	.post-parent
+		horizontal

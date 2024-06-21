@@ -1,0 +1,8 @@
+.genre-title
+	margin-bottom 0.5rem
+
+.genre-statistics
+	text-align center
+	opacity 0.5
+	font-size 0.9rem
+	margin-bottom content-padding

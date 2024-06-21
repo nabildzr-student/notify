@@ -1,0 +1,11 @@
+.login-buttons
+	horizontal-wrap
+	width 100%
+	justify-content center
+
+.login-button
+	padding 0.5rem
+	color white
+
+	:hover
+		color white

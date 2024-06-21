@@ -1,0 +1,13 @@
+mixin ui-element
+	border 1px solid ui-border-color
+	background ui-background
+	border-radius ui-element-border-radius
+	default-transition
+
+	:hover
+		border-color ui-hover-border-color
+
+mixin ui-disabled
+	color button-color !important
+	background-color ui-disabled-color !important
+	cursor not-allowed !important

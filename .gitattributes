@@ -1,0 +1,19 @@
+# Autodetect text files
+* text=auto eol=lf
+
+# These are always text files
+*.go text
+*.sh text
+*.svg text
+*.pixy text
+*.scarlet text
+*.md text
+*.json text
+*.mod text
+*.sum text
+
+# These are always binary
+*.png binary
+*.jpg binary
+*.webp binary
+*.webm binary

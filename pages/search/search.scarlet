@@ -1,0 +1,49 @@
+.anime-search,
+.user-search,
+.soundtrack-search
+	justify-content flex-start !important
+
+.character-search
+	horizontal-wrap
+
+.anime-search-result
+	width anime-image-small-width !important
+	height anime-image-small-height !important
+
+.posts-search-results
+	horizontal-wrap
+	justify-content space-around
+
+.posts-search-result
+	vertical
+	flex 1
+	flex-basis 380px
+	padding 0.75rem
+	overflow hidden
+
+.posts-search-result-header
+	horizontal
+
+.posts-search-result-title
+	flex 1
+	clip-long-text
+
+.posts-search-result-author
+	text-align right
+	opacity 0.5
+
+.posts-search-result-sample
+	clip-long-text
+	margin-bottom 1rem
+	opacity 0.8
+
+.soundtrack-search-anime,
+.amv-search-anime
+	opacity 0.35
+
+.no-search-results
+	text-align left
+	padding-bottom typography-margin
+
+.search-section-disabled
+	display none !important
